@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 """共通ユーティリティ（CGI応答・設定読み込み・パス検証）"""
 
+import csv
+import hmac
 import json
 import os
 import sys
@@ -9,6 +11,7 @@ from datetime import datetime
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 SETTING_PATH = os.path.join(SCRIPT_DIR, "setting.json")
+HISTORY_PATH = os.path.join(SCRIPT_DIR, "history.csv")
 
 
 def send_json(obj):
@@ -86,3 +89,88 @@ def make_backup(setting, path):
     import shutil
     shutil.copy2(path, backup_path)
     return backup_path
+
+
+def check_password(setting, password):
+    """save_password 未設定なら常にOK。設定済みなら一致を確認。"""
+    expected = setting.get("save_password", "")
+    if not expected:
+        return True
+    if password is None:
+        password = ""
+    return hmac.compare_digest(
+        expected.encode("utf-8"), password.encode("utf-8")
+    )
+
+
+def _value_summary(v, limit=80):
+    """履歴用に値を短い文字列化"""
+    if isinstance(v, dict):
+        return "object({}件)".format(len(v))
+    if isinstance(v, list):
+        return "array({}件)".format(len(v))
+    s = json.dumps(v, ensure_ascii=False)
+    if len(s) > limit:
+        s = s[:limit] + "…"
+    return s
+
+
+def json_diff(old, new, path="", max_items=200):
+    """2つのJSON値の差分を [{type,path,before,after}] で返す"""
+    changes = []
+
+    def add(kind, p, before, after):
+        if len(changes) < max_items:
+            changes.append({
+                "type": kind,
+                "path": p or "(root)",
+                "before": _value_summary(before) if before is not _MISSING else "",
+                "after": _value_summary(after) if after is not _MISSING else "",
+            })
+
+    def child(p, key):
+        return p + "." + str(key) if p else str(key)
+
+    def walk(o, n, p):
+        if isinstance(o, dict) and isinstance(n, dict):
+            for k in o:
+                if k not in n:
+                    add("削除", child(p, k), o[k], _MISSING)
+                else:
+                    walk(o[k], n[k], child(p, k))
+            for k in n:
+                if k not in o:
+                    add("追加", child(p, k), _MISSING, n[k])
+        elif isinstance(o, list) and isinstance(n, list):
+            for i in range(min(len(o), len(n))):
+                walk(o[i], n[i], child(p, i))
+            for i in range(min(len(o), len(n)), len(o)):
+                add("削除", child(p, i), o[i], _MISSING)
+            for i in range(min(len(o), len(n)), len(n)):
+                add("追加", child(p, i), _MISSING, n[i])
+        elif o != n:
+            add("変更", p, o, n)
+
+    walk(old, new, path)
+    return changes
+
+
+class _Missing(object):
+    pass
+
+
+_MISSING = _Missing()
+
+
+def write_history(filename, action, detail=""):
+    """history.csv に履歴を追記（UTF-8 BOM付き、Excel互換）"""
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    file_exists = os.path.exists(HISTORY_PATH)
+    try:
+        with open(HISTORY_PATH, mode="a", encoding="utf-8-sig", newline="") as f:
+            writer = csv.writer(f, lineterminator="\r\n")
+            if not file_exists:
+                writer.writerow(["日時", "ファイル", "操作", "詳細"])
+            writer.writerow([timestamp, filename, action, detail])
+    except Exception:
+        pass

@@ -208,6 +208,37 @@
   #empty-msg {
     text-align: center; color: var(--text-muted); padding: 60px 0; font-size: 14px;
   }
+
+  /* ===== パスワードモーダル ===== */
+  #pw-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(15,23,42,.45);
+    z-index: 100;
+    align-items: center; justify-content: center;
+  }
+  #pw-overlay.show { display: flex; }
+  .pw-card {
+    background: var(--surface);
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0,0,0,.2);
+    padding: 24px;
+    width: 320px;
+  }
+  .pw-card h2 { font-size: 15px; margin-bottom: 12px; }
+  .pw-card input[type="password"] {
+    width: 100%; padding: 8px 12px;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    font-size: 14px; font-family: inherit; margin-bottom: 10px; outline: none;
+  }
+  .pw-card input[type="password"]:focus {
+    border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,.15);
+  }
+  .pw-card .pw-err {
+    display: none; font-size: 12px; color: var(--danger); margin-bottom: 8px;
+  }
+  .pw-card .pw-err.show { display: block; }
+  .pw-card .pw-actions { display: flex; justify-content: flex-end; gap: 8px; }
 </style>
 </head>
 <body>
@@ -234,6 +265,7 @@
   <button class="btn" id="btn-check">チェック</button>
   <button class="btn" id="btn-download" disabled>ダウンロード</button>
   <button class="btn primary" id="btn-save" disabled>保存</button>
+  <a class="btn" href="history.html">履歴</a>
 </header>
 
 <div id="statusbar"><span class="muted">ファイルを選択してください</span></div>
@@ -245,6 +277,18 @@
     <div id="text-error"></div>
   </div>
 </main>
+
+<div id="pw-overlay">
+  <div class="pw-card">
+    <h2>保存パスワード</h2>
+    <input type="password" id="pw-input" placeholder="パスワードを入力" autocomplete="off">
+    <div class="pw-err" id="pw-err"></div>
+    <div class="pw-actions">
+      <button class="btn" id="pw-cancel">キャンセル</button>
+      <button class="btn primary" id="pw-ok">保存</button>
+    </div>
+  </div>
+</div>
 
 <script>
 (function () {
@@ -258,7 +302,8 @@
     mode: "tree",        // "tree" | "text"
     expanded: {},        // pathKey -> true
     forceExpand: {},     // 検索ヒットの祖先 pathKey -> true
-    loadedValid: true    // 読み込み時点でJSONが正常か
+    loadedValid: true,   // 読み込み時点でJSONが正常か
+    passwordRequired: false  // 保存時にパスワードが必要か
   };
 
   var $ = function (id) { return document.getElementById(id); };
@@ -318,6 +363,7 @@
       var sel = $("file-select");
       sel.innerHTML = '<option value="">-- ファイルを選択 --</option>';
       if (!res.success) { showStatusError(res.error); return; }
+      state.passwordRequired = !!res.password_required;
       res.files.forEach(function (f) {
         var o = document.createElement("option");
         o.value = f.name;
@@ -806,7 +852,19 @@
     return JSON.stringify(state.model, null, 4) + "\n";
   }
 
-  function save() {
+  /* ---------- パスワードモーダル ---------- */
+  function showPwModal(errMsg) {
+    $("pw-err").textContent = errMsg || "";
+    $("pw-err").classList.toggle("show", !!errMsg);
+    $("pw-input").value = "";
+    $("pw-overlay").classList.add("show");
+    setTimeout(function () { $("pw-input").focus(); }, 50);
+  }
+  function hidePwModal() {
+    $("pw-overlay").classList.remove("show");
+  }
+
+  function requestSave() {
     if (!state.file || state.source !== "server") return;
     var content = currentText();
     // まずクライアント側で検証
@@ -817,22 +875,41 @@
       renderStatus({ error: "保存前チェック失敗: " + (e.message || e) });
       return;
     }
+    if (state.passwordRequired) {
+      showPwModal();
+    } else {
+      doSave("");
+    }
+  }
+
+  function doSave(password) {
+    var content = currentText();
     api("save_json.py", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ file: state.file, content: content })
+      body: JSON.stringify({ file: state.file, content: content, password: password })
     }).then(function (res) {
       if (!res.success) {
+        if (res.auth_error) {
+          showPwModal(res.error);  // パスワード再入力
+          return;
+        }
+        hidePwModal();
         var d = res.error_detail;
         if (d) renderStatus({ error: res.error, line: d.line, column: d.column });
         else renderStatus({ error: res.error });
         return;
       }
+      hidePwModal();
       state.model = JSON.parse(content);
       setDirty(false);
-      renderStatus({ message: res.message + (res.backup ? "（バックアップ: " + res.backup + "）" : "") });
+      var msg = res.message;
+      if (res.backup) msg += "（バックアップ: " + res.backup + "）";
+      if (res.changes !== undefined) msg += " 変更" + res.changes + "件";
+      renderStatus({ message: msg });
       if (state.mode === "tree") renderTree();
     }).catch(function (e) {
+      hidePwModal();
       renderStatus({ error: "保存失敗: " + e });
     });
   }
@@ -941,7 +1018,16 @@
       renderStatus({ message: "JSONは正常です（ツリー編集は常に正しいJSONを生成します）" });
     }
   };
-  $("btn-save").onclick = save;
+  $("btn-save").onclick = requestSave;
+  $("pw-ok").onclick = function () { doSave($("pw-input").value); };
+  $("pw-cancel").onclick = hidePwModal;
+  $("pw-input").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") doSave($("pw-input").value);
+    if (e.key === "Escape") hidePwModal();
+  });
+  $("pw-overlay").addEventListener("click", function (e) {
+    if (e.target === this) hidePwModal();
+  });
   $("btn-download").onclick = download;
   $("btn-expand").onclick = function () {
     (function walk(v, path) {

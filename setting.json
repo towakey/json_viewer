@@ -1,5 +1,6 @@
 {
   "json_directory": "json_files",
+  "save_password": "password123",
   "read_encoding": "utf-8",
   "write_encoding": "utf-8",
   "create_backup": true,

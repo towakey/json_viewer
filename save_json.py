@@ -12,6 +12,7 @@ import os
 import sys
 from common import (
     send_json, load_setting, resolve_json_path, json_error_dict, make_backup,
+    check_password, json_diff, write_history,
 )
 
 
@@ -44,6 +45,7 @@ def main():
     filename = data.get("file", "")
     content = data.get("content", "")
     check_only = bool(data.get("check_only", False))
+    password = data.get("password", "")
 
     path = resolve_json_path(setting, filename)
     if path is None:
@@ -55,7 +57,7 @@ def main():
 
     # JSON検証
     try:
-        json.loads(content)
+        new_value = json.loads(content)
     except json.JSONDecodeError as e:
         send_json(json_error_dict(e))
         return
@@ -66,6 +68,23 @@ def main():
     if check_only:
         send_json({"success": True, "valid": True, "message": "JSONは正常です"})
         return
+
+    # パスワード認証
+    if not check_password(setting, password):
+        send_json({
+            "success": False,
+            "error": "パスワードが違います",
+            "auth_error": True,
+        })
+        return
+
+    # 変更前の内容を読み込み（差分用）
+    old_value = None
+    try:
+        with open(path, mode="r", encoding=setting.get("read_encoding", "utf-8")) as f:
+            old_value = json.loads(f.read())
+    except Exception:
+        pass  # 読み込めなくても保存は継続
 
     # バックアップ → 書き込み
     try:
@@ -82,11 +101,27 @@ def main():
         send_json({"success": False, "error": "書き込みエラー: " + str(e)})
         return
 
+    # 変更履歴を記録
+    try:
+        if old_value is not None:
+            changes = json_diff(old_value, new_value)
+        else:
+            changes = [{"type": "保存", "path": "(root)",
+                        "before": "", "after": "（旧データ読み込み不可）"}]
+        detail = (
+            json.dumps(changes, ensure_ascii=False, separators=(",", ":"))
+            if changes else "変更なし"
+        )
+        write_history(filename, "保存", detail)
+    except Exception:
+        pass
+
     send_json({
         "success": True,
         "message": "保存しました",
         "file": filename,
         "backup": os.path.basename(backup_path) if backup_path else None,
+        "changes": len(changes) if isinstance(changes, list) else 0,
     })
 
 

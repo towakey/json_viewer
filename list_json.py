@@ -43,7 +43,11 @@ def main():
         send_json({"success": False, "error": "一覧取得エラー: " + str(e)})
         return
 
-    send_json({"success": True, "files": files})
+    send_json({
+        "success": True,
+        "files": files,
+        "password_required": bool(setting.get("save_password", "")),
+    })
 
 
 if __name__ == "__main__":

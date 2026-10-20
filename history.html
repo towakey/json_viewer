@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>変更履歴 - JSONビューアー</title>
+<style>
+  :root {
+    --bg:         #f0f4f8;
+    --surface:    #ffffff;
+    --border:     #d0d7e2;
+    --primary:    #2563eb;
+    --text:       #1e293b;
+    --text-muted: #64748b;
+    --radius:     8px;
+    --shadow:     0 1px 4px rgba(0,0,0,.10);
+    --mono:       "Consolas", "Menlo", "Courier New", monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Meiryo", "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  header h1 { font-size: 16px; font-weight: 700; color: var(--primary); margin-right: 8px; }
+  select {
+    padding: 6px 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--text);
+    background: var(--surface);
+    outline: none;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 6px 13px; border-radius: var(--radius);
+    border: 1px solid var(--border); font-size: 12px; font-weight: 600;
+    font-family: inherit; cursor: pointer; background: var(--surface);
+    color: var(--text); text-decoration: none; white-space: nowrap;
+  }
+  .btn:hover { background: var(--bg); }
+  .spacer { flex: 1; }
+  #statusbar { padding: 6px 16px; font-size: 12px; color: var(--text-muted); min-height: 30px; }
+  #statusbar .err { color: #dc2626; font-weight: 600; }
+  main { flex: 1; padding: 12px 16px 40px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    font-size: 13px;
+  }
+  th, td { padding: 8px 12px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+  th { background: #f8fafc; font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+  td.dt { white-space: nowrap; font-family: var(--mono); font-size: 12px; }
+  td.file { font-family: var(--mono); font-size: 12px; }
+  td.op { white-space: nowrap; font-weight: 600; }
+  td.detail { font-family: var(--mono); font-size: 11px; line-height: 1.6; word-break: break-all; }
+  .chg { margin: 0 0 2px; }
+  .chg .t { font-weight: 700; margin-right: 4px; }
+  .chg .t.add { color: #16a34a; }
+  .chg .t.del { color: #dc2626; }
+  .chg .t.mod { color: #d97706; }
+  .chg .p { color: #7c3aed; margin-right: 6px; }
+  .chg .arrow { color: var(--text-muted); margin: 0 4px; }
+  .empty { text-align: center; color: var(--text-muted); padding: 40px 0; }
+</style>
+</head>
+<body>
+<header>
+  <h1>変更履歴</h1>
+  <select id="file-filter"><option value="">（すべてのファイル）</option></select>
+  <button class="btn" id="btn-reload">再読み込み</button>
+  <span class="spacer"></span>
+  <a class="btn" href="index.html">← エディターに戻る</a>
+</header>
+<div id="statusbar"></div>
+<main>
+  <table>
+    <thead><tr><th>日時</th><th>ファイル</th><th>操作</th><th>詳細</th></tr></thead>
+    <tbody id="tbody"></tbody>
+  </table>
+  <div id="empty" class="empty" style="display:none">履歴はありません</div>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  function formatDetail(raw) {
+    if (!raw) return "";
+    var changes;
+    try { changes = JSON.parse(raw); } catch (e) { return esc(raw); }
+    if (!Array.isArray(changes)) return esc(raw);
+    var cls = { "追加": "add", "削除": "del", "変更": "mod" };
+    return changes.map(function (c) {
+      var t = c.type || "";
+      var line = '<div class="chg"><span class="t ' + (cls[t] || "") + '">' + esc(t) + '</span>' +
+                 '<span class="p">' + esc(c.path || "") + '</span>';
+      if (c.before !== undefined && c.before !== "") line += esc(c.before) + ' <span class="arrow">→</span> ';
+      if (c.after !== undefined) line += esc(c.after);
+      return line + '</div>';
+    }).join("");
+  }
+
+  function load() {
+    var file = $("file-filter").value;
+    var url = "read_history.py" + (file ? "?file=" + encodeURIComponent(file) : "");
+    $("statusbar").textContent = "読み込み中…";
+    fetch(url).then(function (r) { return r.json(); }).then(function (res) {
+      if (!res.success) {
+        $("statusbar").innerHTML = '<span class="err">' + esc(res.error) + '</span>';
+        return;
+      }
+      var tbody = $("tbody");
+      tbody.innerHTML = "";
+      $("empty").style.display = res.rows.length ? "none" : "block";
+      res.rows.forEach(function (row) {
+        var tr = document.createElement("tr");
+        tr.innerHTML =
+          '<td class="dt">' + esc(row[0]) + '</td>' +
+          '<td class="file">' + esc(row[1]) + '</td>' +
+          '<td class="op">' + esc(row[2]) + '</td>' +
+          '<td class="detail">' + formatDetail(row[3]) + '</td>';
+        tbody.appendChild(tr);
+      });
+      // ファイル一覧をフィルタに反映
+      var files = {};
+      res.rows.forEach(function (r) { files[r[1]] = true; });
+      var sel = $("file-filter");
+      var cur = sel.value;
+      Array.from(sel.options).forEach(function (o, i) { if (i > 0) sel.remove(i); });
+      sel.innerHTML = '<option value="">（すべてのファイル）</option>';
+      Object.keys(files).sort().forEach(function (f) {
+        var o = document.createElement("option");
+        o.value = f; o.textContent = f;
+        if (f === cur) o.selected = true;
+        sel.appendChild(o);
+      });
+      $("statusbar").textContent = res.count + " 件";
+    }).catch(function (e) {
+      $("statusbar").innerHTML = '<span class="err">読み込み失敗: ' + esc(e) + '</span>';
+    });
+  }
+
+  $("file-filter").onchange = load;
+  $("btn-reload").onclick = load;
+  load();
+})();
+</script>
+</body>
+</html>
