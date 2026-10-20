@@ -23,7 +23,6 @@ Windows Server + IIS + Python CGI 環境で動作します（外部ライブラ�
 | `save_json.py` | JSON検証・保存CGI |
 | `common.py` | 共通モジュール（CGI応答・パス検証など） |
 | `setting.json` | 設定ファイル |
-| `web.config` | IIS設定 |
 | `test_server.py` | ローカルテスト用CGIサーバー |
 | `json_files/` | 編集対象のJSONファイル置き場 |
 | `json_files/backup/` | 保存時バックアップの出力先 |
@@ -47,9 +46,9 @@ Windows Server + IIS + Python CGI 環境で動作します（外部ライブラ�
 
 1. IISにCGI機能をインストール（役割サービス「CGI」）
 2. サイト/アプリケーションに本フォルダを配置
-3. `web.config` の `scriptProcessor` のPythonパスを環境に合わせて変更（既定: `C:\Python37\python.exe`）
+3. IISマネージャーの「ハンドラーマッピング」で `*.py` → `C:\Python37\python.exe "%s" %s`（CgiModule）を登録（Pythonのパスは環境に合わせて変更）。既に他のCGIアプリで設定済みなら不要です
 4. `json_files` フォルダにIISワーカープロセスの書き込み権限を付与
-5. `http://サーバー/フォルダ名/` にアクセス
+5. `http://サーバー/フォルダ名/` にアクセス（`index.html` が既定ドキュメントとして開きます）
 
 ## ローカルでの動作確認
 
