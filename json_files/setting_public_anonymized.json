@@ -1,0 +1,3020 @@
+{
+    "common": {
+        "IMPORT": {
+            "FOLDER": "./files/import/"
+        },
+        "EXPORT": {
+            "FOLDER": "./files/export/"
+        },
+        "PO_FIXED_FILE": {
+            "FOLDER": "./files/export/",
+            "FILE": "po_fixed_file.csv",
+            "HEADER": [
+                "customer_product",
+                "company_product",
+                "po_no",
+                "shipping_po_no",
+                "lot_no",
+                "start_wmai",
+                "wmai",
+                "shipping_wmai",
+                "shipping_status",
+                "shipping_date",
+                "wip_status",
+                "process_id",
+                "step_label",
+                "lot_type",
+                "lot_status",
+                "original_lot",
+                "commit_out_date",
+                "customer_name",
+                "start_date",
+                "priority",
+                "disp_flag",
+                "mode",
+                "wip_not_found_date",
+                "order_date",
+                "ship_confirm_date",
+                "created_at",
+                "updated_at"
+            ],
+            "INT_FIELDS": [
+                "start_wmai",
+                "wmai",
+                "shipping_wmai"
+            ]
+        },
+        "SHIPPING_PO_LOTLIST": {
+            "FOLDER": "./files/export/shipping_po_lotlist/"
+        },
+        "FOUNDRY_LIST": {
+            "FOLDER": "./files/import/",
+            "FILE": "fd_prod_list.tsv",
+            "COPY_FROM": "./redacted/internal_path/",
+            "COPY_TO": "./files/import/",
+            "LOCAL_FOLDER": "./files/import/",
+            "LOCAL_FILE": "fd_prod_list_local.tsv"
+        },
+        "FOUNDRY_PROC_FLOW": {
+            "FOLDER": "./files/import/",
+            "FILE": "foundry_proc_flow.txt",
+            "COPY_FROM": "./redacted/internal_path/",
+            "COPY_TO": "./files/import/",
+            "SUBFILE": "foundry_proc_flow-TEST.txt"
+        },
+        "WIP_STAT": {
+            "FOLDER": "./redacted/internal_path/",
+            "COPY_FROM": "./redacted/internal_path/",
+            "COPY_TO": "./files/import/"
+        },
+        "SIKA": {
+            "FOLDER": "./redacted/internal_path/",
+            "COPY_FROM": "./redacted/internal_path/",
+            "COPY_TO": "./files/import/"
+        },
+        "PO_REGISTRY": {
+            "FOLDER": "./files/export/",
+            "FILE": "po_registry.csv"
+        },
+        "WIP_FILE": {
+            "FOLDER": "./files/export/wip/"
+        },
+        "JYOGAI": {
+            "COPY_FROM": "./redacted/internal_path/",
+            "COPY_TO": "./files/import/",
+            "FOLDER": "./files/import/",
+            "FILE": "jyogai.csv"
+        },
+        "FINAL_USER2CUSTOMER_NAME": {
+            "COMPANY_A": "CUST_A",
+            "CUST_B": "CUST_B",
+            "Company B": "CUST_C",
+            "Company C": "CUST_D",
+            "Company D": "CUST_E",
+            "CUST_F": "CUST_E",
+            "CUST_G": "CUST_G",
+            "Company E": "CUST_H",
+            "Company F": "",
+            "Company G": "",
+            "CUST_I": "CUST_I",
+            "Company H": "CUST_J",
+            "Company I": "CUST_K",
+            "CUST_L": "CUST_L",
+            "CUST_M": "CUST_M",
+            "Company J": "Company J"
+        },
+        "FTP_Transfer": {
+            "TEST": {
+                "TIME": [
+                    "01"
+                ],
+                "PROXY": {
+                    "URL": "internal-host.example.invalid"
+                },
+                "HOST": "",
+                "USER": "",
+                "PASSWORD": "",
+                "SEND_URL": ""
+            }
+        },
+        "SFTP_Transfer": {
+            "TEST_SBOX_IN": {
+                "DESCRIPTION": "シャープネットワーク内からのSBOX接続テスト",
+                "TIME": [
+                    "09",
+                    "12",
+                    "13",
+                    "14",
+                    "15",
+                    "16",
+                    "17",
+                    "18",
+                    "19",
+                    "20"
+                ],
+                "PROXY": {},
+                "HOST": "internal-host.example.invalid",
+                "USER": "<REDACTED_USER>",
+                "PASSWORD": "<REDACTED_PASSWORD>",
+                "PORT": "2222",
+                "SEND_FILE": [
+                    {
+                        "REMOTE_DIR": "/FITIPOWER_INTEGRATED_TECHNOLOGY_INC",
+                        "FILE_URL": "./files/export/wip/CUST_H/rep/WIP_FPT{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_NAME": "WIP_FPT{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_TYPE": "NOW"
+                    }
+                ]
+            },
+            "TEST_SBOX_OUT": {
+                "DESCRIPTION": "シャープ外からのSBOX接続テスト",
+                "TIME": [
+                    "01"
+                ],
+                "PROXY": {
+                    "URL": "internal-host.example.invalid"
+                },
+                "HOST": "internal-host.example.invalid",
+                "USER": "<REDACTED_USER>",
+                "PASSWORD": "<REDACTED_PASSWORD>",
+                "SEND_URL": [
+                    {
+                        "REMOTE_DIR": "/FITIPOWER_INTEGRATED_TECHNOLOGY_INC",
+                        "FILE_URL": "./files/export/wip/CUST_H/rep/WIP_FPT{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_NAME": "WIP_FPT{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_TYPE": "NOW"
+                    }
+                ]
+            },
+            "CUST_H": {
+                "DESCRIPTION": "CUST_H WIP SBOX配信",
+                "TIME": [
+                    "00",
+                    "03",
+                    "06",
+                    "09",
+                    "12",
+                    "15",
+                    "18",
+                    "21"
+                ],
+                "PROXY": {},
+                "HOST": "internal-host.example.invalid",
+                "USER": "<REDACTED_USER>",
+                "PASSWORD": "<REDACTED_PASSWORD>",
+                "PORT": "2222",
+                "SEND_FILE": [
+                    {
+                        "REMOTE_DIR": "/FITIPOWER_INTEGRATED_TECHNOLOGY_INC",
+                        "FILE_URL": "./files/export/wip/CUST_H/rep/WIP_FPT{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_NAME": "WIP_FPT{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_TYPE": "NOW"
+                    }
+                ]
+            },
+            "CUST_I": {
+                "DESCRIPTION": "CUST_I WIP SBOX配信",
+                "TIME": [
+                    "00",
+                    "12"
+                ],
+                "PROXY": {},
+                "HOST": "internal-host.example.invalid",
+                "USER": "<REDACTED_USER>",
+                "PASSWORD": "<REDACTED_PASSWORD>",
+                "PORT": "2222",
+                "SEND_FILE": [
+                    {
+                        "REMOTE_DIR": "/TOPCO_SCIENTIFIC",
+                        "FILE_URL": "./files/export/wip/CUST_I/rep/WIP_TSC{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_NAME": "WIP_TSC{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_TYPE": "NOW"
+                    }
+                ]
+            }
+        },
+        "File_Transfer": {
+            "FITI_LOAD4": {
+                "DESCRIPTION": "CUST_H WIP Load4転送",
+                "TIME": [
+                    "00",
+                    "03",
+                    "06",
+                    "09",
+                    "12",
+                    "15",
+                    "18",
+                    "21"
+                ],
+                "SEND_FILE": [
+                    {
+                        "REMOTE_DIR": "./redacted/internal_path",
+                        "FILE_URL": "./files/export/wip/CUST_H/rep/WIP_FPT{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_NAME": "WIP_FPT{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_TYPE": "NOW"
+                    }
+                ]
+            }
+        },
+        "MAIL": {
+            "PO_FILE_DELIVERY": {
+                "FROM": "user001@example.com",
+                "TO": [
+                    "user002@example.com"
+                ],
+                "TIME": [
+                    "01"
+                ],
+                "TITLE": "POファイル配信（テスト）",
+                "BODY": "各位\n\nお世話になります、担当者です。\n\n現時点でのPO固定ファイルとPO中間ファイルを配信します。\n\n※2026/3/17:PO固定ファイル、PO中間ファイルを再作成しました。\n",
+                "ATTACH": [
+                    {
+                        "FILE_URL": "./files/export/po_fixed_file.csv",
+                        "FILE_NAME": "po_fixed_file.csv",
+                        "FILE_TYPE": "NORMAL"
+                    },
+                    {
+                        "FILE_URL": "./files/export/po_registry.csv",
+                        "FILE_NAME": "po_registry.csv",
+                        "FILE_TYPE": "NORMAL"
+                    }
+                ]
+            },
+            "TEST": {
+                "FROM": "user003@example.com",
+                "TO": [
+                    "user004@example.com"
+                ],
+                "TIME": [
+                    "00",
+                    "01",
+                    "02",
+                    "03",
+                    "04",
+                    "05",
+                    "06",
+                    "07",
+                    "08",
+                    "09",
+                    "10",
+                    "11",
+                    "12",
+                    "13",
+                    "14",
+                    "15",
+                    "16",
+                    "17",
+                    "18",
+                    "19",
+                    "20",
+                    "21",
+                    "22",
+                    "23"
+                ],
+                "TITLE": "テスト",
+                "BODY": "各位\n\nお世話になります、担当者です。\n\n現時点でのPO固定ファイルとPO中間ファイルを配信します。\n\n",
+                "ATTACH": [
+                    {
+                        "FILE_URL": "./files/export/po_fixed_file.csv",
+                        "FILE_NAME": "po_fixed_file.csv",
+                        "FILE_TYPE": "NORMAL"
+                    },
+                    {
+                        "FILE_URL": "./files/export/po_registry.csv",
+                        "FILE_NAME": "po_registry.csv",
+                        "FILE_TYPE": "NORMAL"
+                    },
+                    {
+                        "FILE_URL": "./redacted/internal_path",
+                        "FILE_NAME": "KURJ_{YYYY}{MM}{DD}2140.NF",
+                        "FILE_TYPE": "YESTERDAY"
+                    },
+                    {
+                        "FILE_URL": "./files/export/wip/CUST_H/rep/WIP_FPT{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_NAME": "WIP_FPT{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_TYPE": "NOW"
+                    }
+                ]
+            },
+            "TEST2": {
+                "FROM": "user005@example.com",
+                "TO": [
+                    "user006@example.com"
+                ],
+                "TIME": [
+                    "00",
+                    "01",
+                    "02",
+                    "03",
+                    "04",
+                    "05",
+                    "06",
+                    "07",
+                    "08",
+                    "09",
+                    "10",
+                    "11",
+                    "12",
+                    "13",
+                    "14",
+                    "15",
+                    "16",
+                    "17",
+                    "18",
+                    "19",
+                    "20",
+                    "21",
+                    "22",
+                    "23"
+                ],
+                "TITLE": "テスト",
+                "BODY": "各位\n\nお世話になります、担当者です。\n\n現時点でのPO固定ファイルとPO中間ファイルを配信します。\n\n",
+                "ATTACH": []
+            },
+            "Company J": {
+                "FROM": "user007@example.com",
+                "TO": [
+                    "user008@example.com",
+                    "user009@example.com",
+                    "user010@example.com",
+                    "user011@example.com",
+                    "user012@example.com",
+                    "user013@example.com",
+                    "user014@example.com",
+                    "user015@example.com",
+                    "user016@example.com",
+                    "user017@example.com",
+                    "user018@example.com",
+                    "user019@example.com",
+                    "user020@example.com",
+                    "user021@example.com",
+                    "user022@example.com",
+                    "user023@example.com",
+                    "user024@example.com",
+                    "user025@example.com",
+                    "user026@example.com",
+                    "user027@example.com"
+                ],
+                "TIME": [
+                    "10"
+                ],
+                "TITLE": "Company J WIP Information",
+                "BODY": "Dear All\n\nAttached file is ExampleFab WIP.\n\n\nBest regards,\n",
+                "ATTACH": [
+                    {
+                        "FILE_URL": "./files/export/wip/Company J/rep/WIP_OSIC{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_NAME": "WIP_OSIC{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_TYPE": "NOW"
+                    }
+                ]
+            },
+            "CUST_F": {
+                "FROM": "user028@example.com",
+                "TO": [
+                    "user029@example.com",
+                    "user030@example.com",
+                    "user031@example.com",
+                    "user032@example.com",
+                    "user033@example.com",
+                    "user034@example.com",
+                    "user035@example.com",
+                    "user036@example.com",
+                    "user037@example.com",
+                    "user038@example.com",
+                    "user039@example.com",
+                    "user040@example.com",
+                    "user041@example.com",
+                    "user042@example.com",
+                    "user043@example.com",
+                    "user044@example.com",
+                    "user045@example.com",
+                    "user046@example.com"
+                ],
+                "TIME": [
+                    "10"
+                ],
+                "TITLE": "CUST_F WIP Information",
+                "BODY": "Dear All\n\nAttached file is ExampleFab WIP.\n\n\nBest regards,\n",
+                "ATTACH": [
+                    {
+                        "FILE_URL": "./files/export/wip/CUST_F/rep/WIP_HSBG{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_NAME": "WIP_HSBG{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_TYPE": "NOW"
+                    }
+                ]
+            },
+            "MEC_TEST": {
+                "FROM": "user047@example.com",
+                "TO": [
+                    "user048@example.com",
+                    "user049@example.com",
+                    "user050@example.com",
+                    "user051@example.com",
+                    "user052@example.com"
+                ],
+                "TIME": [
+                    "10"
+                ],
+                "TITLE": "[TEST MAIL v2]CUST_A WIP Information",
+                "BODY": "Dear All\n\nAttached file is ExampleFab WIP.\nThis system version is v2.\n\n\nBest regards,\n",
+                "ATTACH": [
+                    {
+                        "FILE_URL": "./files/export/wip/CUST_A/rep/WIP_MEC{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_NAME": "WIP_MEC{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_TYPE": "NOW"
+                    }
+                ]
+            },
+            "FPT_TEST": {
+                "FROM": "user053@example.com",
+                "TO": [
+                    "user054@example.com",
+                    "user055@example.com",
+                    "user056@example.com",
+                    "user057@example.com",
+                    "user058@example.com",
+                    "user059@example.com",
+                    "user060@example.com",
+                    "user061@example.com",
+                    "user062@example.com",
+                    "user063@example.com"
+                ],
+                "TIME": [],
+                "TITLE": "[TEST MAIL v2]CUSTOMER_H WIP Information",
+                "BODY": "Dear All\n\nAttached file is ExampleFab WIP.\nThis system version is v2.\n\n\nBest regards,\n",
+                "ATTACH": [
+                    {
+                        "FILE_URL": "./files/export/wip/CUST_H/rep/WIP_FPT{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_NAME": "WIP_FPT{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_TYPE": "NOW"
+                    }
+                ]
+            },
+            "TSC_TEST": {
+                "FROM": "user064@example.com",
+                "TO": [
+                    "user065@example.com",
+                    "user066@example.com",
+                    "user067@example.com",
+                    "user068@example.com",
+                    "user069@example.com",
+                    "user070@example.com",
+                    "user071@example.com",
+                    "user072@example.com",
+                    "user073@example.com"
+                ],
+                "TIME": [],
+                "TITLE": "[TEST MAIL v2]CUST_I WIP Information",
+                "BODY": "Dear All\n\nAttached file is ExampleFab WIP.\nThis system version is v2.\n\n\nBest regards,\n",
+                "ATTACH": [
+                    {
+                        "FILE_URL": "./files/export/wip/CUST_I/rep/WIP_TSC{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_NAME": "WIP_TSC{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_TYPE": "NOW"
+                    }
+                ]
+            },
+            "ICC_TEST": {
+                "FROM": "user074@example.com",
+                "TO": [
+                    "user075@example.com",
+                    "user076@example.com",
+                    "user077@example.com",
+                    "user078@example.com",
+                    "user079@example.com",
+                    "user080@example.com",
+                    "user081@example.com"
+                ],
+                "TIME": [],
+                "TITLE": "[TEST MAIL v2]CUST_C WIP Information",
+                "BODY": "Dear All\n\nAttached file is ExampleFab WIP.\nThis system version is v2.\n\n\nBest regards,\n",
+                "ATTACH": [
+                    {
+                        "FILE_URL": "./files/export/wip/CUST_C/rep/WIP_ICC{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_NAME": "WIP_ICC{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_TYPE": "NOW"
+                    }
+                ]
+            },
+            "CUST_C": {
+                "FROM": "user082@example.com",
+                "TO": [
+                    "user083@example.com",
+                    "user084@example.com",
+                    "user085@example.com",
+                    "user086@example.com",
+                    "user087@example.com",
+                    "user088@example.com",
+                    "user089@example.com",
+                    "user090@example.com",
+                    "user091@example.com",
+                    "user092@example.com",
+                    "user093@example.com"
+                ],
+                "TIME": [
+                    "07"
+                ],
+                "TITLE": "Company B WIP Information",
+                "BODY": "Dear All\n\nAttached file is ExampleFab WIP.\n\nBest regards,\n",
+                "ATTACH": [
+                    {
+                        "FILE_URL": "./files/export/wip/CUST_C/rep/WIP_ICC{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_NAME": "WIP_ICC{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_TYPE": "NOW"
+                    }
+                ]
+            },
+            "CUST_M": {
+                "FROM": "user094@example.com",
+                "TO": [
+                    "user095@example.com",
+                    "user096@example.com",
+                    "user097@example.com",
+                    "user098@example.com",
+                    "user099@example.com",
+                    "user100@example.com",
+                    "user101@example.com",
+                    "user102@example.com",
+                    "user103@example.com",
+                    "user104@example.com",
+                    "user105@example.com",
+                    "user106@example.com",
+                    "user107@example.com",
+                    "user108@example.com",
+                    "user109@example.com",
+                    "user110@example.com",
+                    "user111@example.com",
+                    "user112@example.com",
+                    "user113@example.com",
+                    "user114@example.com",
+                    "user115@example.com",
+                    "user116@example.com"
+                ],
+                "TIME": [
+                    "07"
+                ],
+                "TITLE": "CUST_M WIP Information",
+                "BODY": "Dear All\n\nAttached file is ExampleFab WIP.\n\nBest regards,\n",
+                "ATTACH": [
+                    {
+                        "FILE_URL": "./files/export/wip/CUST_M/rep/WIP_MTC{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_NAME": "WIP_MTC{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_TYPE": "NOW"
+                    }
+                ]
+            },
+            "CUST_H": {
+                "FROM": "user117@example.com",
+                "TO": [
+                    "user118@example.com",
+                    "user119@example.com",
+                    "user120@example.com",
+                    "user121@example.com",
+                    "user122@example.com",
+                    "user123@example.com",
+                    "user124@example.com",
+                    "user125@example.com",
+                    "user126@example.com",
+                    "user127@example.com",
+                    "user128@example.com",
+                    "user129@example.com",
+                    "user130@example.com",
+                    "user131@example.com",
+                    "user132@example.com",
+                    "user133@example.com"
+                ],
+                "TIME": [
+                    "07",
+                    "13",
+                    "19"
+                ],
+                "TITLE": "CUSTOMER_H WIP Information",
+                "BODY": "Dear All\n\nAttached file is ExampleFab WIP.\n\nBest regards,\n",
+                "ATTACH": [
+                    {
+                        "FILE_URL": "./files/export/wip/CUST_H/rep/WIP_FPT{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_NAME": "WIP_FPT{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_TYPE": "1_HOUR_AGO"
+                    }
+                ]
+            },
+            "CUST_I": {
+                "FROM": "user134@example.com",
+                "TO": [
+                    "user135@example.com",
+                    "user136@example.com",
+                    "user137@example.com",
+                    "user138@example.com",
+                    "user139@example.com",
+                    "user140@example.com",
+                    "user141@example.com",
+                    "user142@example.com",
+                    "user143@example.com",
+                    "user144@example.com",
+                    "user145@example.com",
+                    "user146@example.com",
+                    "user147@example.com",
+                    "user148@example.com",
+                    "user149@example.com",
+                    "user150@example.com",
+                    "user151@example.com",
+                    "user152@example.com",
+                    "user153@example.com",
+                    "user154@example.com",
+                    "user155@example.com",
+                    "user156@example.com",
+                    "user157@example.com",
+                    "user158@example.com",
+                    "user159@example.com",
+                    "user160@example.com"
+                ],
+                "TIME": [
+                    "00",
+                    "12"
+                ],
+                "TITLE": "CUST_I WIP Information",
+                "BODY": "Dear All\n\nAttached file is ExampleFab WIP.\n\nBest regards,\n",
+                "ATTACH": [
+                    {
+                        "FILE_URL": "./files/export/wip/CUST_I/rep/WIP_TSC{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_NAME": "WIP_TSC{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_TYPE": "NOW"
+                    }
+                ]
+            },
+            "CUST_D": {
+                "FROM": "user161@example.com",
+                "TO": [
+                    "user162@example.com",
+                    "user163@example.com",
+                    "user164@example.com",
+                    "user165@example.com",
+                    "user166@example.com",
+                    "user167@example.com",
+                    "user168@example.com",
+                    "user169@example.com"
+                ],
+                "TIME": [
+                    "07"
+                ],
+                "TITLE": "CUST_D WIP Information",
+                "BODY": "Dear All\n\nAttached file is ExampleFab WIP.\n\nBest regards,\nExampleFab Fab4\n",
+                "ATTACH": [
+                    {
+                        "FILE_URL": "./files/export/wip/CUST_D/rep/WIP_SNPC{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_NAME": "WIP_SNPC{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_TYPE": "NOW"
+                    }
+                ]
+            },
+            "CUST_G": {
+                "FROM": "user170@example.com",
+                "TO": [
+                    "user171@example.com",
+                    "user172@example.com",
+                    "user173@example.com",
+                    "user174@example.com",
+                    "user175@example.com",
+                    "user176@example.com",
+                    "user177@example.com",
+                    "user178@example.com",
+                    "user179@example.com",
+                    "user180@example.com",
+                    "user181@example.com"
+                ],
+                "TIME": [
+                    "07"
+                ],
+                "TITLE": "CUST_G WIP Information",
+                "BODY": "Dear All\n\nAttached file is ExampleFab WIP.\n\nBest regards,\nExampleFab Fab4\n",
+                "ATTACH": [
+                    {
+                        "FILE_URL": "./files/export/wip/CUST_G/rep/WIP_RDJ{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_NAME": "WIP_RDJ{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_TYPE": "NOW"
+                    }
+                ]
+            },
+            "CUST_A": {
+                "FROM": "user182@example.com",
+                "TO": [
+                    "user183@example.com",
+                    "user184@example.com",
+                    "user185@example.com",
+                    "user186@example.com",
+                    "user187@example.com",
+                    "user188@example.com",
+                    "user189@example.com",
+                    "user190@example.com",
+                    "user191@example.com",
+                    "user192@example.com"
+                ],
+                "TIME": [
+                    "10"
+                ],
+                "TITLE": "CUST_A WIP Information",
+                "BODY": "Dear All\n\nAttached file is ExampleFab WIP.\n\nBest regards,\nExampleFab Fab4\n",
+                "ATTACH": [
+                    {
+                        "FILE_URL": "./files/export/wip/CUST_A/rep/WIP_MEC{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_NAME": "WIP_MEC{YYYY}{MM}{DD}{HH}00.csv",
+                        "FILE_TYPE": "NOW"
+                    }
+                ]
+            }
+        }
+    },
+    "customer": {
+        "CUST_H": {
+            "SHIPMENT_LIST": {
+                "COPY_FROM": "./redacted/internal_path/",
+                "COPY_TO": "./files/import/CUST_H/shipment_list/",
+                "customer_product": 0,
+                "fab_out_date": 24,
+                "sheet_name": "Shipment list",
+                "po": [
+                    {
+                        "po_no": 3,
+                        "shipping_wmai": 5
+                    },
+                    {
+                        "po_no": 6,
+                        "shipping_wmai": 8
+                    },
+                    {
+                        "po_no": 9,
+                        "shipping_wmai": 11
+                    },
+                    {
+                        "po_no": 12,
+                        "shipping_wmai": 14
+                    }
+                ]
+            },
+            "PO_MANAGEMENT_FILE": {
+                "COPY_FROM": "./redacted/internal_path/",
+                "COPY_TO": "./files/import/CUST_H/po_management_file/",
+                "SHEET_NAME": "Open_PO",
+                "COL_PONO": 5,
+                "COL_CUSTOMER_PRODUCT": 2,
+                "COL_QTY": 7,
+                "COL_OPEN_PO": 8
+            },
+            "COMMITED_DATE": {
+                "FOLDER": "./redacted/internal_path/",
+                "FILE": "commited_date_FPT.txt"
+            },
+            "WIP": {
+                "DISP_NAME": "CUSTOMER_H",
+                "NAME_FORMAT": "WIP_FPT{YYYYMMDD}{HH}00.csv",
+                "HOLD_DISP_ARRAY": [
+                    {
+                        "DISP_HOLD_NAME": "HOLD",
+                        "TARGET_HOLD_TYPE": [
+                            "USR",
+                            "TNA",
+                            "OPS"
+                        ]
+                    },
+                    {
+                        "DISP_HOLD_NAME": "",
+                        "TARGET_HOLD_TYPE": [
+                            ""
+                        ]
+                    }
+                ],
+                "LATEST_CHECK_ITEM": {
+                    "lot_no": "Lot_ID",
+                    "po_no": "PO_No(CUSTOMER_H)",
+                    "customer_product": "Customer Product",
+                    "company_product": "ExampleFab Product",
+                    "current_stage": "Current_Stage"
+                },
+                "EXPORT_ITEM": {
+                    "No#": {
+                        "item": ""
+                    },
+                    "Current Fab": {
+                        "item": "current_fab"
+                    },
+                    "Customer": {
+                        "item": "customer"
+                    },
+                    "Customer Product": {
+                        "item": "customer_product"
+                    },
+                    "ExampleFab Product": {
+                        "item": "company_product"
+                    },
+                    "Gross Die": {
+                        "item": "gross_die"
+                    },
+                    "Lot_ID": {
+                        "item": "lot_no"
+                    },
+                    "Wafer_Start_Qty": {
+                        "item": "start_qty"
+                    },
+                    "Wafer_Qty": {
+                        "item": "qty"
+                    },
+                    "Current_Stage": {
+                        "item": "current_stage"
+                    },
+                    "Stage_Sequence/Stage": {
+                        "item": "stage_sequence"
+                    },
+                    "Layer_Name": {
+                        "item": "layer_name"
+                    },
+                    "Layer_SEQ": {
+                        "item": "layer_seq"
+                    },
+                    "PO_No(CUSTOMER_H)": {
+                        "item": "po_no"
+                    },
+                    "Priority": {
+                        "item": "priority"
+                    },
+                    "Start_Date": {
+                        "item": "start_date"
+                    },
+                    "Commit Out Date": {
+                        "item": "commit_out_date"
+                    },
+                    "Projected_Out_Date": {
+                        "item": "projected_out_date"
+                    },
+                    "Hold Flag": {
+                        "item": "hold_flag"
+                    },
+                    "Stay Day": {
+                        "item": "stay_day"
+                    },
+                    "Future Hold Flag": {
+                        "item": ""
+                    },
+                    "Mother Lot": {
+                        "item": "mother_lot"
+                    },
+                    "Wafer_ID": {
+                        "item": "wafer_id"
+                    },
+                    "[EOR]": {
+                        "item": ""
+                    }
+                }
+            }
+        },
+        "CUST_I": {
+            "SHIPMENT_LIST": {
+                "COPY_FROM": "./redacted/internal_path/",
+                "COPY_TO": "./files/import/CUST_I/shipment_list/",
+                "customer_product": 0,
+                "fab_out_date": 22,
+                "sheet_name": "Shipment list",
+                "po": [
+                    {
+                        "po_no": 3,
+                        "shipping_wmai": 5
+                    },
+                    {
+                        "po_no": 6,
+                        "shipping_wmai": 8
+                    },
+                    {
+                        "po_no": 9,
+                        "shipping_wmai": 11
+                    },
+                    {
+                        "po_no": 12,
+                        "shipping_wmai": 14
+                    },
+                    {
+                        "po_no": 15,
+                        "shipping_wmai": 17
+                    }
+                ]
+            },
+            "PO_MANAGEMENT_FILE": {
+                "COPY_FROM": "./redacted/internal_path/",
+                "COPY_TO": "./files/import/CUST_I/po_management_file/",
+                "SHEET_NAME": "Open_PO",
+                "COL_PONO": 4,
+                "COL_CUSTOMER_PRODUCT": 2,
+                "COL_QTY": 6,
+                "COL_OPEN_PO": 7
+            },
+            "COMMITED_DATE": {
+                "FOLDER": "./redacted/internal_path/",
+                "FILE": "commited_date_TSC.txt"
+            },
+            "WIP": {
+                "DISP_NAME": "CUSTOMER_I",
+                "NAME_FORMAT": "WIP_TSC{YYYYMMDD}{HH}00.csv",
+                "HOLD_DISP_ARRAY": [
+                    {
+                        "DISP_HOLD_NAME": "HOLD",
+                        "TARGET_HOLD_TYPE": [
+                            "USR",
+                            "TNA",
+                            "OPS"
+                        ]
+                    },
+                    {
+                        "DISP_HOLD_NAME": "",
+                        "TARGET_HOLD_TYPE": [
+                            ""
+                        ]
+                    }
+                ],
+                "EXPORT_ITEM": {
+                    "No#": {
+                        "item": ""
+                    },
+                    "Current Fab": {
+                        "item": "current_fab"
+                    },
+                    "Customer": {
+                        "item": "customer"
+                    },
+                    "Customer Product": {
+                        "item": "customer_product"
+                    },
+                    "ExampleFab Product": {
+                        "item": "company_product"
+                    },
+                    "Gross Die": {
+                        "item": "gross_die"
+                    },
+                    "Lot_ID": {
+                        "item": "lot_no"
+                    },
+                    "Wafer_Start_Qty": {
+                        "item": "start_qty"
+                    },
+                    "Wafer_Qty": {
+                        "item": "qty"
+                    },
+                    "Current_Stage": {
+                        "item": "current_stage"
+                    },
+                    "Stage_Sequence/Stage": {
+                        "item": "stage_sequence"
+                    },
+                    "Layer_Name": {
+                        "item": "layer_name"
+                    },
+                    "Layer_SEQ": {
+                        "item": "layer_seq"
+                    },
+                    "PO_No(CUST_I)": {
+                        "item": "po_no"
+                    },
+                    "Priority": {
+                        "item": "priority"
+                    },
+                    "Start_Date": {
+                        "item": "start_date"
+                    },
+                    "Commit Out Date": {
+                        "item": "commit_out_date"
+                    },
+                    "Projected_Out_Date": {
+                        "item": "projected_out_date"
+                    },
+                    "Hold Flag": {
+                        "item": "hold_flag"
+                    },
+                    "Stay Day": {
+                        "item": "stay_day"
+                    },
+                    "Future Hold Flag": {
+                        "item": ""
+                    },
+                    "Mother Lot": {
+                        "item": "mother_lot"
+                    },
+                    "Wafer_ID": {
+                        "item": "wafer_id"
+                    },
+                    "[EOR]": {
+                        "item": ""
+                    }
+                }
+            },
+            "MANUAL_WIP": {
+                "FOLDER": "./files/import/CUST_I/",
+                "FILE": "manual.csv",
+                "HEADER": [
+                    "customer_product",
+                    "lot_no",
+                    "original_lot",
+                    "wmai",
+                    "po_no",
+                    "po_no2",
+                    "order_date",
+                    "commit_out_date",
+                    "shipment_date",
+                    "priority",
+                    "lot_type",
+                    "stop_process",
+                    "stop_layer",
+                    "process_id",
+                    "company_product"
+                ]
+            }
+        },
+        "CUST_J": {
+            "SHIPMENT_LIST": {
+                "COPY_FROM": "./redacted/internal_path/",
+                "COPY_TO": "./files/import/CUST_J/shipment_list/",
+                "customer_product": 0,
+                "fab_out_date": 13,
+                "sheet_name": "Shipment list",
+                "po": [
+                    {
+                        "po_no": 2,
+                        "shipping_wmai": 4
+                    },
+                    {
+                        "po_no": 5,
+                        "shipping_wmai": 7
+                    },
+                    {
+                        "po_no": 8,
+                        "shipping_wmai": 10
+                    }
+                ]
+            },
+            "PO_MANAGEMENT_FILE": {
+                "COPY_FROM": "./redacted/internal_path/",
+                "COPY_TO": "./files/import/CUST_J/po_management_file/",
+                "SHEET_NAME": "Open_PO",
+                "COL_PONO": 1,
+                "COL_CUSTOMER_PRODUCT": 1,
+                "COL_QTY": 1,
+                "COL_OPEN_PO": 1
+            },
+            "COMMITED_DATE": {
+                "FOLDER": "",
+                "FILE": ""
+            },
+            "WIP": {
+                "DISP_NAME": "",
+                "NAME_FORMAT": "WIP_NVT{YYYYMMDD}{HH}00.csv",
+                "HOLD_DISP_ARRAY": [
+                    {
+                        "DISP_HOLD_NAME": "HOLD",
+                        "TARGET_HOLD_TYPE": [
+                            "USR",
+                            "TNA",
+                            "OPS"
+                        ]
+                    },
+                    {
+                        "DISP_HOLD_NAME": "",
+                        "TARGET_HOLD_TYPE": [
+                            ""
+                        ]
+                    }
+                ],
+                "EXPORT_ITEM": {
+                    "FABLOT": {
+                        "item": "lot_no"
+                    },
+                    "CUSTOMERLOT": {
+                        "item": "lot_no"
+                    },
+                    "SITE_LOT": {
+                        "item": "lot_no"
+                    },
+                    "LOTTYPE": {
+                        "item": "lot_type"
+                    },
+                    "LOTSTATUS": {
+                        "item": "lot_status_nova"
+                    },
+                    "HOLD_REASON": {
+                        "item": ""
+                    },
+                    "SHIP_TO": {
+                        "item": "ship_to_nova"
+                    },
+                    "SHIP_DATE": {
+                        "item": ""
+                    },
+                    "PRIORITY": {
+                        "item": "priority"
+                    },
+                    "ORDER_DATE": {
+                        "item": "order_date"
+                    },
+                    "COMMITED_DATE": {
+                        "item": "commit_out_date"
+                    },
+                    "RECEIVE_DATE": {
+                        "item": ""
+                    },
+                    "START_DATE": {
+                        "item": "start_date"
+                    },
+                    "STEP_IN_DATE": {
+                        "item": "step_in_date"
+                    },
+                    "WIP_DATE": {
+                        "item": "wip_date"
+                    },
+                    "OPEROUT_FCST_DATE": {
+                        "item": "operout_fcst_date"
+                    },
+                    "SHIP_FCST_DATE": {
+                        "item": "ship_fcst_date"
+                    },
+                    "SHIP_CONF_DATE": {
+                        "item": "ship_conf_date"
+                    },
+                    "VENDOR": {
+                        "item": "vendor"
+                    },
+                    "VENDOR_SITE": {
+                        "item": "vendor_site"
+                    },
+                    "OPERATION": {
+                        "item": "operation"
+                    },
+                    "NEXT_OPERATIONS": {
+                        "item": "next_operation"
+                    },
+                    "CURR_STEP": {
+                        "item": "current_stage"
+                    },
+                    "CURR_STEP_SEQ": {
+                        "item": "current_step"
+                    },
+                    "CURR_STEP_POS": {
+                        "item": "current_step"
+                    },
+                    "TOTAL_STEPS": {
+                        "item": "total_step"
+                    },
+                    "WAFER_QTY": {
+                        "item": "qty"
+                    },
+                    "DIE_QTY": {
+                        "item": ""
+                    },
+                    "GROSS_DIE": {
+                        "item": "gross_die"
+                    },
+                    "VENDOR_DEVICE": {
+                        "item": "company_product"
+                    },
+                    "ORDER": {
+                        "item": "po_no"
+                    },
+                    "CUST_PROD": {
+                        "item": "customer_product"
+                    },
+                    "SHP_PRO_NO": {
+                        "item": "customer_product"
+                    },
+                    "REVISE_ORDER": {
+                        "item": ""
+                    },
+                    "REVISE_CUST_DEVICE": {
+                        "item": ""
+                    },
+                    "REVISE_ORDER_DATE": {
+                        "item": ""
+                    },
+                    "PROCESSGEN": {
+                        "item": "process_gen"
+                    },
+                    "PROCESSFAMILY": {
+                        "item": "process_family"
+                    },
+                    "PROCESS": {
+                        "item": "process_id"
+                    },
+                    "PROCESSVERSION": {
+                        "item": "process_version"
+                    },
+                    "ROUTE": {
+                        "item": "route"
+                    },
+                    "ROUTEDESC": {
+                        "item": "current_stage"
+                    },
+                    "STAGE_GROUP": {
+                        "item": "layer_name"
+                    },
+                    "BL_THICKNESS": {
+                        "item": ""
+                    },
+                    "CURR_LAYER": {
+                        "item": "current_layer"
+                    },
+                    "TOTAL_LAYER": {
+                        "item": "total_layer"
+                    },
+                    "LOT_HANDLING_QTY": {
+                        "item": ""
+                    },
+                    "NEW_PROD_NO": {
+                        "item": ""
+                    },
+                    "FUTURE_HOLD": {
+                        "item": ""
+                    },
+                    "FUTURE_HOLD_LAYER": {
+                        "item": ""
+                    },
+                    "ATTRIBUTE_1": {
+                        "item": ""
+                    },
+                    "ATTRIBUTE_2": {
+                        "item": "wafer_id"
+                    },
+                    "ATTRIBUTE_3": {
+                        "item": ""
+                    },
+                    "ATTRIBUTE_4": {
+                        "item": ""
+                    },
+                    "ATTRIBUTE_5": {
+                        "item": ""
+                    },
+                    "ATTRIBUTE_6": {
+                        "item": ""
+                    },
+                    "ATTRIBUTE_7": {
+                        "item": ""
+                    },
+                    "ATTRIBUTE_8": {
+                        "item": ""
+                    },
+                    "ATTRIBUTE_9": {
+                        "item": ""
+                    },
+                    "ATTRIBUTE_10": {
+                        "item": ""
+                    },
+                    "ATTRIBUTE_11": {
+                        "item": ""
+                    },
+                    "ATTRIBUTE_12": {
+                        "item": ""
+                    },
+                    "ATTRIBUTE_13": {
+                        "item": ""
+                    },
+                    "ATTRIBUTE_14": {
+                        "item": ""
+                    },
+                    "ATTRIBUTE_15": {
+                        "item": ""
+                    },
+                    "ATTRIBUTE_16": {
+                        "item": ""
+                    },
+                    "[EOR]": {
+                        "item": ""
+                    }
+                }
+            },
+            "MANUAL_WIP": {
+                "FOLDER": "./files/import/CUST_J/",
+                "FILE": "manual.csv",
+                "HEADER": [
+                    "customer_product",
+                    "lot_no",
+                    "original_lot",
+                    "wmai",
+                    "po_no",
+                    "po_no2",
+                    "order_date",
+                    "commit_out_date",
+                    "shipment_date",
+                    "priority",
+                    "lot_type",
+                    "stop_process",
+                    "stop_layer",
+                    "process_id",
+                    "company_product"
+                ]
+            }
+        },
+        "CUST_K": {
+            "SHIPMENT_LIST": {
+                "COPY_FROM": "",
+                "COPY_TO": "",
+                "customer_product": 0,
+                "fab_out_date": 0,
+                "sheet_name": "Shipment list",
+                "po": [
+                    {
+                        "po_no": 0,
+                        "shipping_wmai": 0
+                    },
+                    {
+                        "po_no": 0,
+                        "shipping_wmai": 0
+                    },
+                    {
+                        "po_no": 0,
+                        "shipping_wmai": 0
+                    }
+                ]
+            },
+            "PO_MANAGEMENT_FILE": {
+                "COPY_FROM": "./redacted/internal_path/",
+                "COPY_TO": "./files/import/CUST_K/po_management_file/",
+                "SHEET_NAME": "Open_PO",
+                "COL_PONO": 5,
+                "COL_CUSTOMER_PRODUCT": 1,
+                "COL_QTY": 7,
+                "COL_OPEN_PO": 8
+            },
+            "COMMITED_DATE": {
+                "FOLDER": "./redacted/internal_path/",
+                "FILE": "commited_date_HMX.txt"
+            },
+            "WIP": {
+                "DISP_NAME": "",
+                "NAME_FORMAT": "WIP_HMX{YYYYMMDD}{HH}00.csv",
+                "HOLD_DISP_ARRAY": [
+                    {
+                        "DISP_HOLD_NAME": "HOLD",
+                        "TARGET_HOLD_TYPE": [
+                            "USR",
+                            "TNA",
+                            "OPS"
+                        ]
+                    },
+                    {
+                        "DISP_HOLD_NAME": "",
+                        "TARGET_HOLD_TYPE": [
+                            ""
+                        ]
+                    }
+                ],
+                "EXPORT_ITEM": {
+                    "No#": {
+                        "item": ""
+                    },
+                    "Current Fab": {
+                        "item": "current_fab"
+                    },
+                    "Customer": {
+                        "item": "customer"
+                    },
+                    "Customer Product": {
+                        "item": "customer_product"
+                    },
+                    "ExampleFab Product": {
+                        "item": "company_product"
+                    },
+                    "Gross Die": {
+                        "item": ""
+                    },
+                    "Lot_ID": {
+                        "item": "lot_no"
+                    },
+                    "Wafer_Start_Qty": {
+                        "item": "start_qty"
+                    },
+                    "Wafer_Qty": {
+                        "item": "qty"
+                    },
+                    "Current_Stage": {
+                        "item": "current_stage"
+                    },
+                    "Stage_Sequence/Stage": {
+                        "item": "stage_sequence"
+                    },
+                    "Layer_Name": {
+                        "item": "layer_name"
+                    },
+                    "Layer_SEQ": {
+                        "item": "layer_seq"
+                    },
+                    "PO_No(CUSTOMER_H)": {
+                        "item": "po_no"
+                    },
+                    "Priority": {
+                        "item": ""
+                    },
+                    "Start_Date": {
+                        "item": ""
+                    },
+                    "Commit Out Date": {
+                        "item": ""
+                    },
+                    "Projected_Out_Date": {
+                        "item": ""
+                    },
+                    "Hold Flag": {
+                        "item": "hold_flag"
+                    },
+                    "Stay Day": {
+                        "item": ""
+                    },
+                    "Future Hold Flag": {
+                        "item": ""
+                    },
+                    "Mother Lot": {
+                        "item": ""
+                    },
+                    "Wafer_ID": {
+                        "item": "wafer_id"
+                    },
+                    "[EOR]": {
+                        "item": ""
+                    }
+                }
+            }
+        },
+        "CUST_C": {
+            "SHIPMENT_LIST": {
+                "COPY_FROM": "",
+                "COPY_TO": "",
+                "customer_product": 0,
+                "fab_out_date": 0,
+                "sheet_name": "Shipment list",
+                "po": [
+                    {
+                        "po_no": 0,
+                        "shipping_wmai": 0
+                    },
+                    {
+                        "po_no": 0,
+                        "shipping_wmai": 0
+                    },
+                    {
+                        "po_no": 0,
+                        "shipping_wmai": 0
+                    }
+                ]
+            },
+            "PO_MANAGEMENT_FILE": {
+                "COPY_FROM": "./redacted/internal_path/",
+                "COPY_TO": "./files/import/CUST_C/po_management_file/",
+                "SHEET_NAME": "Open_PO",
+                "COL_PONO": 4,
+                "COL_CUSTOMER_PRODUCT": 1,
+                "COL_QTY": 7,
+                "COL_OPEN_PO": 8
+            },
+            "COMMITED_DATE": {
+                "FOLDER": "./redacted/internal_path/",
+                "FILE": "commited_date_ICC.txt"
+            },
+            "WIP": {
+                "DISP_NAME": "CUST_C",
+                "NAME_FORMAT": "WIP_ICC{YYYYMMDD}{HH}00.csv",
+                "HOLD_DISP_ARRAY": [
+                    {
+                        "DISP_HOLD_NAME": "HOLD",
+                        "TARGET_HOLD_TYPE": [
+                            "USR",
+                            "TNA",
+                            "OPS"
+                        ]
+                    },
+                    {
+                        "DISP_HOLD_NAME": "",
+                        "TARGET_HOLD_TYPE": [
+                            ""
+                        ]
+                    }
+                ],
+                "EXPORT_ITEM": {
+                    "No#": {
+                        "item": ""
+                    },
+                    "Current Fab": {
+                        "item": "current_fab"
+                    },
+                    "Customer": {
+                        "item": "customer"
+                    },
+                    "Customer Product": {
+                        "item": "customer_product"
+                    },
+                    "ExampleFab Product": {
+                        "item": "company_product"
+                    },
+                    "Gross Die": {
+                        "item": "gross_die"
+                    },
+                    "Lot_ID": {
+                        "item": "lot_no"
+                    },
+                    "Wafer_Start_Qty": {
+                        "item": "start_qty"
+                    },
+                    "Wafer_Qty": {
+                        "item": "qty"
+                    },
+                    "Current_Stage": {
+                        "item": "current_stage"
+                    },
+                    "Stage_Sequence/Stage": {
+                        "item": "stage_sequence"
+                    },
+                    "Layer_Name": {
+                        "item": "layer_name"
+                    },
+                    "Layer_SEQ": {
+                        "item": "layer_seq"
+                    },
+                    "PO_No": {
+                        "item": "po_no"
+                    },
+                    "Priority": {
+                        "item": "priority"
+                    },
+                    "Start_Date": {
+                        "item": "start_date"
+                    },
+                    "Commit Out Date": {
+                        "item": "commit_out_date"
+                    },
+                    "Projected_Out_Date": {
+                        "item": "projected_out_date"
+                    },
+                    "Hold Flag": {
+                        "item": "hold_flag"
+                    },
+                    "Stay Day": {
+                        "item": "stay_day"
+                    },
+                    "Future Hold Flag": {
+                        "item": ""
+                    },
+                    "Mother Lot": {
+                        "item": "mother_lot"
+                    },
+                    "Wafer_ID": {
+                        "item": "wafer_id"
+                    },
+                    "[EOR]": {
+                        "item": ""
+                    }
+                }
+            },
+            "MANUAL_WIP": {
+                "FOLDER": "./files/import/CUST_C/",
+                "FILE": "manual.csv",
+                "HEADER": [
+                    "customer_product",
+                    "lot_no",
+                    "original_lot",
+                    "wmai",
+                    "po_no",
+                    "po_no2",
+                    "order_date",
+                    "commit_out_date",
+                    "shipment_date",
+                    "priority",
+                    "lot_type",
+                    "stop_process",
+                    "stop_layer",
+                    "process_id",
+                    "company_product"
+                ]
+            }
+        },
+        "CUST_B": {
+            "SHIPMENT_LIST": {
+                "COPY_FROM": "",
+                "COPY_TO": "",
+                "customer_product": 0,
+                "fab_out_date": 0,
+                "sheet_name": "Shipment list",
+                "po": [
+                    {
+                        "po_no": 0,
+                        "shipping_wmai": 0
+                    },
+                    {
+                        "po_no": 0,
+                        "shipping_wmai": 0
+                    },
+                    {
+                        "po_no": 0,
+                        "shipping_wmai": 0
+                    }
+                ]
+            },
+            "PO_MANAGEMENT_FILE": {
+                "COPY_FROM": "./redacted/internal_path/",
+                "COPY_TO": "./files/import/CUST_B/po_management_file/",
+                "SHEET_NAME": "Open_PO",
+                "COL_PONO": 4,
+                "COL_CUSTOMER_PRODUCT": 2,
+                "COL_QTY": 6,
+                "COL_OPEN_PO": 7
+            },
+            "COMMITED_DATE": {
+                "FOLDER": "./redacted/internal_path/",
+                "FILE": "commited_date_NISD.txt"
+            },
+            "WIP": {
+                "DISP_NAME": "",
+                "NAME_FORMAT": "WIP_NISD{YYYYMMDD}{HH}00.csv",
+                "HOLD_DISP_ARRAY": [
+                    {
+                        "DISP_HOLD_NAME": "HOLD",
+                        "TARGET_HOLD_TYPE": [
+                            "USR",
+                            "TNA",
+                            "OPS"
+                        ]
+                    },
+                    {
+                        "DISP_HOLD_NAME": "",
+                        "TARGET_HOLD_TYPE": [
+                            ""
+                        ]
+                    }
+                ],
+                "EXPORT_ITEM": {
+                    "No#": {
+                        "item": ""
+                    },
+                    "Current Fab": {
+                        "item": "current_fab"
+                    },
+                    "Customer": {
+                        "item": "customer"
+                    },
+                    "Customer Product": {
+                        "item": "customer_product"
+                    },
+                    "ExampleFab Product": {
+                        "item": "company_product"
+                    },
+                    "Gross Die": {
+                        "item": "gross_die"
+                    },
+                    "Lot_ID": {
+                        "item": "lot_no"
+                    },
+                    "Wafer_Start_Qty": {
+                        "item": "start_qty"
+                    },
+                    "Wafer_Qty": {
+                        "item": "qty"
+                    },
+                    "Current_Stage": {
+                        "item": "current_stage"
+                    },
+                    "Stage_Sequence/Stage": {
+                        "item": "stage_sequence"
+                    },
+                    "Layer_Name": {
+                        "item": "layer_name"
+                    },
+                    "Layer_SEQ": {
+                        "item": "layer_seq"
+                    },
+                    "PO_No": {
+                        "item": "po_no"
+                    },
+                    "Priority": {
+                        "item": "priority"
+                    },
+                    "Start_Date": {
+                        "item": "start_date"
+                    },
+                    "Commit Out Date": {
+                        "item": "commit_out_date"
+                    },
+                    "Projected_Out_Date": {
+                        "item": "projected_out_date"
+                    },
+                    "Hold Flag": {
+                        "item": "hold_flag"
+                    },
+                    "Stay Day": {
+                        "item": "stay_day"
+                    },
+                    "Future Hold Flag": {
+                        "item": ""
+                    },
+                    "Mother Lot": {
+                        "item": "mother_lot"
+                    },
+                    "Wafer_ID": {
+                        "item": "wafer_id"
+                    },
+                    "[EOR]": {
+                        "item": ""
+                    }
+                }
+            }
+        },
+        "CUST_G": {
+            "SHIPMENT_LIST": {
+                "MODE": 1,
+                "COPY_FROM": "./redacted/internal_path",
+                "COPY_TO": "./files/import/CUST_G/shipment_list/",
+                "customer_product": 5,
+                "sheet_name": "CUST_G",
+                "po_no": 4,
+                "po": [
+                    {
+                        "fab_out_date": 11,
+                        "shipping_wmai": 12
+                    },
+                    {
+                        "fab_out_date": 13,
+                        "shipping_wmai": 14
+                    },
+                    {
+                        "fab_out_date": 15,
+                        "shipping_wmai": 16
+                    },
+                    {
+                        "fab_out_date": 17,
+                        "shipping_wmai": 18
+                    }
+                ]
+            },
+            "PO_MANAGEMENT_FILE": {
+                "COPY_FROM": "./redacted/internal_path/",
+                "COPY_TO": "./files/import/CUST_G/po_management_file/",
+                "SHEET_NAME": "Open_PO",
+                "COL_PONO": 4,
+                "COL_CUSTOMER_PRODUCT": 2,
+                "COL_QTY": 6,
+                "COL_OPEN_PO": 7
+            },
+            "COMMITED_DATE": {
+                "FOLDER": "./redacted/internal_path/",
+                "FILE": "commited_date_RDJ.txt"
+            },
+            "WIP": {
+                "DISP_NAME": "",
+                "NAME_FORMAT": "WIP_RDJ{YYYYMMDD}{HH}00.csv",
+                "HOLD_DISP_ARRAY": [
+                    {
+                        "DISP_HOLD_NAME": "HOLD",
+                        "TARGET_HOLD_TYPE": [
+                            "USR",
+                            "TNA",
+                            "OPS"
+                        ]
+                    },
+                    {
+                        "DISP_HOLD_NAME": "",
+                        "TARGET_HOLD_TYPE": [
+                            ""
+                        ]
+                    }
+                ],
+                "EXPORT_ITEM": {
+                    "No#": {
+                        "item": ""
+                    },
+                    "Current Fab": {
+                        "item": "current_fab"
+                    },
+                    "Customer": {
+                        "item": "customer"
+                    },
+                    "Customer Product": {
+                        "item": "customer_product"
+                    },
+                    "ExampleFab Product": {
+                        "item": "company_product"
+                    },
+                    "Gross Die": {
+                        "item": "gross_die"
+                    },
+                    "Lot_ID": {
+                        "item": "lot_no"
+                    },
+                    "Wafer_Start_Qty": {
+                        "item": "start_qty"
+                    },
+                    "Wafer_Qty": {
+                        "item": "qty"
+                    },
+                    "Current_Stage": {
+                        "item": "current_stage"
+                    },
+                    "Stage_Sequence/Stage": {
+                        "item": "stage_sequence"
+                    },
+                    "Layer_Name": {
+                        "item": "layer_name"
+                    },
+                    "Layer_SEQ": {
+                        "item": "layer_seq"
+                    },
+                    "PO_No": {
+                        "item": "po_no"
+                    },
+                    "Priority": {
+                        "item": "priority"
+                    },
+                    "Start_Date": {
+                        "item": "start_date"
+                    },
+                    "Commit Out Date": {
+                        "item": "commit_out_date"
+                    },
+                    "Projected_Out_Date": {
+                        "item": "projected_out_date"
+                    },
+                    "Hold Flag": {
+                        "item": "hold_flag"
+                    },
+                    "Stay Day": {
+                        "item": "stay_day"
+                    },
+                    "Future Hold Flag": {
+                        "item": ""
+                    },
+                    "Mother Lot": {
+                        "item": "mother_lot"
+                    },
+                    "Wafer_ID": {
+                        "item": "wafer_id"
+                    },
+                    "[EOR]": {
+                        "item": ""
+                    }
+                }
+            }
+        },
+        "CUST_D": {
+            "SHIPMENT_LIST": {
+                "MODE": 1,
+                "COPY_FROM": "./redacted/internal_path/",
+                "COPY_TO": "./files/import/CUST_D/shipment_list/",
+                "FILE_NAME": "セイコー　注残.xlsx",
+                "customer_product": 5,
+                "sheet_name": "セイコー　",
+                "po_no": 4,
+                "po": [
+                    {
+                        "fab_out_date": 11,
+                        "shipping_wmai": 12
+                    },
+                    {
+                        "fab_out_date": 13,
+                        "shipping_wmai": 14
+                    },
+                    {
+                        "fab_out_date": 15,
+                        "shipping_wmai": 16
+                    },
+                    {
+                        "fab_out_date": 17,
+                        "shipping_wmai": 18
+                    }
+                ]
+            },
+            "PO_MANAGEMENT_FILE": {
+                "COPY_FROM": "./redacted/internal_path/",
+                "COPY_TO": "./files/import/CUST_D/po_management_file/",
+                "SHEET_NAME": "Open_PO",
+                "COL_PONO": 4,
+                "COL_CUSTOMER_PRODUCT": 1,
+                "COL_QTY": 6,
+                "COL_OPEN_PO": 7
+            },
+            "COMMITED_DATE": {
+                "FOLDER": "./redacted/internal_path/",
+                "FILE": "commited_date_SNPC.txt"
+            },
+            "WIP": {
+                "DISP_NAME": "CUSTOMER_D",
+                "NAME_FORMAT": "WIP_SNPC{YYYYMMDD}{HH}00.csv",
+                "HOLD_DISP_ARRAY": [
+                    {
+                        "DISP_HOLD_NAME": "HOLD",
+                        "TARGET_HOLD_TYPE": [
+                            "USR",
+                            "TNA",
+                            "OPS"
+                        ]
+                    },
+                    {
+                        "DISP_HOLD_NAME": "",
+                        "TARGET_HOLD_TYPE": [
+                            ""
+                        ]
+                    }
+                ],
+                "EXPORT_ITEM": {
+                    "No#": {
+                        "item": ""
+                    },
+                    "Current Fab": {
+                        "item": "current_fab"
+                    },
+                    "Customer": {
+                        "item": "customer"
+                    },
+                    "Customer Product": {
+                        "item": "customer_product"
+                    },
+                    "ExampleFab Product": {
+                        "item": "company_product"
+                    },
+                    "Gross Die": {
+                        "item": "gross_die"
+                    },
+                    "Lot_ID": {
+                        "item": "lot_no"
+                    },
+                    "Wafer_Start_Qty": {
+                        "item": "start_qty"
+                    },
+                    "Wafer_Qty": {
+                        "item": "qty"
+                    },
+                    "Current_Stage": {
+                        "item": "current_stage"
+                    },
+                    "Stage_Sequence/Stage": {
+                        "item": "stage_sequence"
+                    },
+                    "Layer_Name": {
+                        "item": "layer_name"
+                    },
+                    "Layer_SEQ": {
+                        "item": "layer_seq"
+                    },
+                    "PO_No": {
+                        "item": "po_no"
+                    },
+                    "Priority": {
+                        "item": "priority"
+                    },
+                    "Start_Date": {
+                        "item": "start_date"
+                    },
+                    "Commit Out Date": {
+                        "item": "commit_out_date"
+                    },
+                    "Projected_Out_Date": {
+                        "item": "projected_out_date"
+                    },
+                    "Hold Flag": {
+                        "item": "hold_flag"
+                    },
+                    "Stay Day": {
+                        "item": "stay_day"
+                    },
+                    "Future Hold Flag": {
+                        "item": ""
+                    },
+                    "Mother Lot": {
+                        "item": "mother_lot"
+                    },
+                    "Wafer_ID": {
+                        "item": "wafer_id"
+                    },
+                    "[EOR]": {
+                        "item": ""
+                    }
+                }
+            },
+            "MANUAL_WIP": {
+                "FOLDER": "./files/import/CUST_D/",
+                "FILE": "manual.csv",
+                "HEADER": [
+                    "customer_product",
+                    "lot_no",
+                    "original_lot",
+                    "wmai",
+                    "po_no",
+                    "po_no2",
+                    "order_date",
+                    "commit_out_date",
+                    "shipment_date",
+                    "priority",
+                    "lot_type",
+                    "stop_process",
+                    "stop_layer",
+                    "process_id",
+                    "company_product"
+                ]
+            }
+        },
+        "CUST_L": {
+            "SHIPMENT_LIST": {
+                "COPY_FROM": "",
+                "COPY_TO": "",
+                "customer_product": 0,
+                "fab_out_date": 0,
+                "sheet_name": "Shipment list",
+                "po": [
+                    {
+                        "po_no": 0,
+                        "shipping_wmai": 0
+                    },
+                    {
+                        "po_no": 0,
+                        "shipping_wmai": 0
+                    },
+                    {
+                        "po_no": 0,
+                        "shipping_wmai": 0
+                    }
+                ]
+            },
+            "PO_MANAGEMENT_FILE": {
+                "COPY_FROM": "./redacted/internal_path/",
+                "COPY_TO": "./files/import/CUST_L/po_management_file/",
+                "SHEET_NAME": "Open_PO",
+                "COL_PONO": 4,
+                "COL_CUSTOMER_PRODUCT": 2,
+                "COL_QTY": 6,
+                "COL_OPEN_PO": 7
+            },
+            "COMMITED_DATE": {
+                "FOLDER": "./redacted/internal_path/",
+                "FILE": "commited_date_SSIC.txt"
+            },
+            "WIP": {
+                "DISP_NAME": "",
+                "NAME_FORMAT": "WIP_SSIC{YYYYMMDD}{HH}00.csv",
+                "HOLD_DISP_ARRAY": [
+                    {
+                        "DISP_HOLD_NAME": "HOLD",
+                        "TARGET_HOLD_TYPE": [
+                            "USR",
+                            "TNA",
+                            "OPS"
+                        ]
+                    },
+                    {
+                        "DISP_HOLD_NAME": "",
+                        "TARGET_HOLD_TYPE": [
+                            ""
+                        ]
+                    }
+                ],
+                "EXPORT_ITEM": {
+                    "No#": {
+                        "item": ""
+                    },
+                    "Current Fab": {
+                        "item": "current_fab"
+                    },
+                    "Customer": {
+                        "item": "customer"
+                    },
+                    "Customer Product": {
+                        "item": "customer_product"
+                    },
+                    "ExampleFab Product": {
+                        "item": "company_product"
+                    },
+                    "Gross Die": {
+                        "item": ""
+                    },
+                    "Lot_ID": {
+                        "item": "lot_no"
+                    },
+                    "Wafer_Start_Qty": {
+                        "item": "start_qty"
+                    },
+                    "Wafer_Qty": {
+                        "item": "qty"
+                    },
+                    "Current_Stage": {
+                        "item": "current_stage"
+                    },
+                    "Stage_Sequence/Stage": {
+                        "item": "stage_sequence"
+                    },
+                    "Layer_Name": {
+                        "item": "layer_name"
+                    },
+                    "Layer_SEQ": {
+                        "item": "layer_seq"
+                    },
+                    "PO_No(CUSTOMER_H)": {
+                        "item": "po_no"
+                    },
+                    "Priority": {
+                        "item": ""
+                    },
+                    "Start_Date": {
+                        "item": ""
+                    },
+                    "Commit Out Date": {
+                        "item": ""
+                    },
+                    "Projected_Out_Date": {
+                        "item": ""
+                    },
+                    "Hold Flag": {
+                        "item": "hold_flag"
+                    },
+                    "Stay Day": {
+                        "item": ""
+                    },
+                    "Future Hold Flag": {
+                        "item": ""
+                    },
+                    "Mother Lot": {
+                        "item": ""
+                    },
+                    "Wafer_ID": {
+                        "item": "wafer_id"
+                    },
+                    "[EOR]": {
+                        "item": ""
+                    }
+                }
+            }
+        },
+        "UPI": {
+            "SHIPMENT_LIST": {
+                "COPY_FROM": "",
+                "COPY_TO": "",
+                "customer_product": 0,
+                "fab_out_date": 0,
+                "sheet_name": "Shipment list",
+                "po": [
+                    {
+                        "po_no": 0,
+                        "shipping_wmai": 0
+                    },
+                    {
+                        "po_no": 0,
+                        "shipping_wmai": 0
+                    },
+                    {
+                        "po_no": 0,
+                        "shipping_wmai": 0
+                    }
+                ]
+            },
+            "PO_MANAGEMENT_FILE": {
+                "COPY_FROM": "./redacted/internal_path/",
+                "COPY_TO": "./files/import/upi/po_management_file/",
+                "SHEET_NAME": "Open_PO",
+                "COL_PONO": 3,
+                "COL_CUSTOMER_PRODUCT": 1,
+                "COL_QTY": 5,
+                "COL_OPEN_PO": 6
+            },
+            "COMMITED_DATE": {
+                "FOLDER": "./redacted/internal_path/",
+                "FILE": "commited_date_UPI.txt"
+            },
+            "WIP": {
+                "DISP_NAME": "",
+                "NAME_FORMAT": "WIP_UPI{YYYYMMDD}{HH}00.csv",
+                "HOLD_DISP_ARRAY": [
+                    {
+                        "DISP_HOLD_NAME": "HOLD",
+                        "TARGET_HOLD_TYPE": [
+                            "USR",
+                            "TNA",
+                            "OPS"
+                        ]
+                    },
+                    {
+                        "DISP_HOLD_NAME": "",
+                        "TARGET_HOLD_TYPE": [
+                            ""
+                        ]
+                    }
+                ],
+                "EXPORT_ITEM": {
+                    "No#": {
+                        "item": ""
+                    },
+                    "Current Fab": {
+                        "item": "current_fab"
+                    },
+                    "Customer": {
+                        "item": "customer"
+                    },
+                    "Customer Product": {
+                        "item": "customer_product"
+                    },
+                    "ExampleFab Product": {
+                        "item": "company_product"
+                    },
+                    "Gross Die": {
+                        "item": ""
+                    },
+                    "Lot_ID": {
+                        "item": "lot_no"
+                    },
+                    "Wafer_Start_Qty": {
+                        "item": "start_qty"
+                    },
+                    "Wafer_Qty": {
+                        "item": "qty"
+                    },
+                    "Current_Stage": {
+                        "item": "current_stage"
+                    },
+                    "Stage_Sequence/Stage": {
+                        "item": "stage_sequence"
+                    },
+                    "Layer_Name": {
+                        "item": "layer_name"
+                    },
+                    "Layer_SEQ": {
+                        "item": "layer_seq"
+                    },
+                    "PO_No(CUSTOMER_H)": {
+                        "item": "po_no"
+                    },
+                    "Priority": {
+                        "item": ""
+                    },
+                    "Start_Date": {
+                        "item": ""
+                    },
+                    "Commit Out Date": {
+                        "item": ""
+                    },
+                    "Projected_Out_Date": {
+                        "item": ""
+                    },
+                    "Hold Flag": {
+                        "item": "hold_flag"
+                    },
+                    "Stay Day": {
+                        "item": ""
+                    },
+                    "Future Hold Flag": {
+                        "item": ""
+                    },
+                    "Mother Lot": {
+                        "item": ""
+                    },
+                    "Wafer_ID": {
+                        "item": "wafer_id"
+                    },
+                    "[EOR]": {
+                        "item": ""
+                    }
+                }
+            }
+        },
+        "CUST_E": {
+            "SHIPMENT_LIST": {
+                "COPY_FROM": "",
+                "COPY_TO": "",
+                "customer_product": 0,
+                "fab_out_date": 0,
+                "sheet_name": "Shipment list",
+                "po": [
+                    {
+                        "po_no": 0,
+                        "shipping_wmai": 0
+                    },
+                    {
+                        "po_no": 0,
+                        "shipping_wmai": 0
+                    },
+                    {
+                        "po_no": 0,
+                        "shipping_wmai": 0
+                    }
+                ]
+            },
+            "PO_MANAGEMENT_FILE": {
+                "COPY_FROM": "./redacted/internal_path/",
+                "COPY_TO": "./files/import/CUST_E/po_management_file/",
+                "SHEET_NAME": "Open_PO",
+                "COL_PONO": 3,
+                "COL_CUSTOMER_PRODUCT": 1,
+                "COL_QTY": 5,
+                "COL_OPEN_PO": 6
+            },
+            "COMMITED_DATE": {
+                "FOLDER": "",
+                "FILE": ""
+            },
+            "WIP": {
+                "DISP_NAME": "",
+                "NAME_FORMAT": "WIP_PWX{YYYYMMDD}{HH}00.csv",
+                "HOLD_DISP_ARRAY": [
+                    {
+                        "DISP_HOLD_NAME": "HOLD",
+                        "TARGET_HOLD_TYPE": [
+                            "USR",
+                            "TNA",
+                            "OPS"
+                        ]
+                    },
+                    {
+                        "DISP_HOLD_NAME": "",
+                        "TARGET_HOLD_TYPE": [
+                            ""
+                        ]
+                    }
+                ],
+                "EXPORT_ITEM": {
+                    "No#": {
+                        "item": ""
+                    },
+                    "Current Fab": {
+                        "item": "current_fab"
+                    },
+                    "Customer": {
+                        "item": "customer"
+                    },
+                    "Customer Product": {
+                        "item": "customer_product"
+                    },
+                    "ExampleFab Product": {
+                        "item": "company_product"
+                    },
+                    "Gross Die": {
+                        "item": ""
+                    },
+                    "Lot_ID": {
+                        "item": "lot_no"
+                    },
+                    "Wafer_Start_Qty": {
+                        "item": "start_qty"
+                    },
+                    "Wafer_Qty": {
+                        "item": "qty"
+                    },
+                    "Current_Stage": {
+                        "item": "current_stage"
+                    },
+                    "Stage_Sequence/Stage": {
+                        "item": "stage_sequence"
+                    },
+                    "Layer_Name": {
+                        "item": "layer_name"
+                    },
+                    "Layer_SEQ": {
+                        "item": "layer_seq"
+                    },
+                    "PO_No(CUSTOMER_H)": {
+                        "item": "po_no"
+                    },
+                    "Priority": {
+                        "item": ""
+                    },
+                    "Start_Date": {
+                        "item": ""
+                    },
+                    "Commit Out Date": {
+                        "item": ""
+                    },
+                    "Projected_Out_Date": {
+                        "item": ""
+                    },
+                    "Hold Flag": {
+                        "item": "hold_flag"
+                    },
+                    "Stay Day": {
+                        "item": ""
+                    },
+                    "Future Hold Flag": {
+                        "item": ""
+                    },
+                    "Mother Lot": {
+                        "item": ""
+                    },
+                    "Wafer_ID": {
+                        "item": "wafer_id"
+                    },
+                    "[EOR]": {
+                        "item": ""
+                    }
+                }
+            },
+            "MANUAL_WIP": {
+                "FOLDER": "./files/import/CUST_E/",
+                "FILE": "manual.csv",
+                "HEADER": [
+                    "customer_product",
+                    "lot_no",
+                    "original_lot",
+                    "wmai",
+                    "po_no",
+                    "po_no2",
+                    "order_date",
+                    "commit_out_date",
+                    "shipment_date",
+                    "priority",
+                    "lot_type",
+                    "stop_process",
+                    "stop_layer",
+                    "process_id",
+                    "company_product"
+                ]
+            }
+        },
+        "CUST_A": {
+            "SHIPMENT_LIST": {
+                "COPY_FROM": "",
+                "COPY_TO": "",
+                "customer_product": 0,
+                "fab_out_date": 0,
+                "sheet_name": "Shipment list",
+                "po": [
+                    {
+                        "po_no": 0,
+                        "shipping_wmai": 0
+                    },
+                    {
+                        "po_no": 0,
+                        "shipping_wmai": 0
+                    },
+                    {
+                        "po_no": 0,
+                        "shipping_wmai": 0
+                    }
+                ]
+            },
+            "PO_MANAGEMENT_FILE": {
+                "COPY_FROM": "",
+                "COPY_TO": "",
+                "SHEET_NAME": "",
+                "COL_PONO": 0,
+                "COL_CUSTOMER_PRODUCT": 0,
+                "COL_QTY": 0,
+                "COL_OPEN_PO": 0
+            },
+            "COMMITED_DATE": {
+                "FOLDER": "./redacted/internal_path/",
+                "FILE": "commited_date_MEC.txt"
+            },
+            "WIP": {
+                "DISP_NAME": "CUST_A",
+                "NAME_FORMAT": "WIP_MEC{YYYYMMDD}{HH}00.csv",
+                "MOTHER_LOT_ONLY_FLAG": "True",
+                "HOLD_DISP_ARRAY": [
+                    {
+                        "DISP_HOLD_NAME": "HOLD",
+                        "TARGET_HOLD_TYPE": [
+                            "USR",
+                            "TNA",
+                            "OPS"
+                        ]
+                    },
+                    {
+                        "DISP_HOLD_NAME": "",
+                        "TARGET_HOLD_TYPE": [
+                            ""
+                        ]
+                    }
+                ],
+                "EXPORT_ITEM": {
+                    "No#": {
+                        "item": ""
+                    },
+                    "Current Fab": {
+                        "item": "current_fab"
+                    },
+                    "Customer": {
+                        "item": "customer"
+                    },
+                    "Customer Product": {
+                        "item": "customer_product"
+                    },
+                    "ExampleFab Product": {
+                        "item": "company_product"
+                    },
+                    "Lot_ID": {
+                        "item": "lot_no"
+                    },
+                    "Wafer_Start_Qty": {
+                        "item": "start_qty"
+                    },
+                    "Wafer_Qty": {
+                        "item": "qty"
+                    },
+                    "Current_Stage": {
+                        "item": "current_stage"
+                    },
+                    "Stage_Sequence/Stage": {
+                        "item": "stage_sequence"
+                    },
+                    "Layer_Name": {
+                        "item": "layer_name"
+                    },
+                    "Layer_SEQ": {
+                        "item": "layer_seq"
+                    },
+                    "Start_Date": {
+                        "item": "start_date"
+                    },
+                    "Commit Out Date": {
+                        "item": "commit_out_date"
+                    },
+                    "Projected_Out_Date": {
+                        "item": "projected_out_date"
+                    },
+                    "Hold Flag": {
+                        "item": "hold_flag"
+                    },
+                    "Stay Day": {
+                        "item": "stay_day"
+                    },
+                    "[EOR]": {
+                        "item": ""
+                    }
+                }
+            }
+        },
+        "CUST_M": {
+            "SHIPMENT_LIST": {
+                "COPY_FROM": "./redacted/internal_path/",
+                "COPY_TO": "./files/import/CUST_M/shipment_list/",
+                "customer_product": 0,
+                "fab_out_date": 24,
+                "sheet_name": "Shipment list",
+                "po": [
+                    {
+                        "po_no": 3,
+                        "shipping_wmai": 5
+                    },
+                    {
+                        "po_no": 6,
+                        "shipping_wmai": 8
+                    },
+                    {
+                        "po_no": 9,
+                        "shipping_wmai": 11
+                    },
+                    {
+                        "po_no": 12,
+                        "shipping_wmai": 14
+                    }
+                ]
+            },
+            "PO_MANAGEMENT_FILE": {
+                "COPY_FROM": "./redacted/internal_path/",
+                "COPY_TO": "./files/import/CUST_M/po_management_file/",
+                "SHEET_NAME": "Open_PO",
+                "COL_PONO": 5,
+                "COL_CUSTOMER_PRODUCT": 2,
+                "COL_QTY": 7,
+                "COL_OPEN_PO": 8
+            },
+            "COMMITED_DATE": {
+                "FOLDER": "./redacted/internal_path/",
+                "FILE": "commited_date_MTC.txt"
+            },
+            "WIP": {
+                "DISP_NAME": "CUST_M",
+                "NAME_FORMAT": "WIP_MTC{YYYYMMDD}{HH}00.csv",
+                "HOLD_DISP_ARRAY": [
+                    {
+                        "DISP_HOLD_NAME": "HOLD",
+                        "TARGET_HOLD_TYPE": [
+                            "USR",
+                            "TNA",
+                            "OPS"
+                        ]
+                    },
+                    {
+                        "DISP_HOLD_NAME": "",
+                        "TARGET_HOLD_TYPE": [
+                            ""
+                        ]
+                    }
+                ],
+                "EXPORT_ITEM": {
+                    "No#": {
+                        "item": ""
+                    },
+                    "Current Fab": {
+                        "item": "current_fab"
+                    },
+                    "Customer": {
+                        "item": "customer"
+                    },
+                    "Customer Product": {
+                        "item": "customer_product"
+                    },
+                    "ExampleFab Product": {
+                        "item": "company_product"
+                    },
+                    "Gross Die": {
+                        "item": "gross_die"
+                    },
+                    "Lot_ID": {
+                        "item": "lot_no"
+                    },
+                    "Wafer_Start_Qty": {
+                        "item": "start_qty"
+                    },
+                    "Wafer_Qty": {
+                        "item": "qty"
+                    },
+                    "Current_Stage": {
+                        "item": "current_stage"
+                    },
+                    "Stage_Sequence/Stage": {
+                        "item": "stage_sequence"
+                    },
+                    "Layer_Name": {
+                        "item": "layer_name"
+                    },
+                    "Layer_SEQ": {
+                        "item": "layer_seq"
+                    },
+                    "PO_No(1)": {
+                        "item": ""
+                    },
+                    "PO_No(2)": {
+                        "item": "po_no"
+                    },
+                    "Priority": {
+                        "item": "priority"
+                    },
+                    "Start_Date": {
+                        "item": "start_date"
+                    },
+                    "Commit Out Date": {
+                        "item": "commit_out_date"
+                    },
+                    "Projected_Out_Date": {
+                        "item": "projected_out_date"
+                    },
+                    "Hold Flag": {
+                        "item": "hold_flag"
+                    },
+                    "Stay Day": {
+                        "item": "stay_day"
+                    },
+                    "Future Hold Flag": {
+                        "item": ""
+                    },
+                    "Mother Lot": {
+                        "item": "mother_lot"
+                    },
+                    "Wafer_ID": {
+                        "item": "wafer_id"
+                    },
+                    "[EOR]": {
+                        "item": ""
+                    }
+                }
+            },
+            "MANUAL_WIP": {
+                "FOLDER": "./files/import/CUST_M/",
+                "FILE": "manual.csv",
+                "HEADER": [
+                    "customer_product",
+                    "lot_no",
+                    "original_lot",
+                    "wmai",
+                    "po_no",
+                    "po_no2",
+                    "order_date",
+                    "commit_out_date",
+                    "shipment_date",
+                    "priority",
+                    "lot_type",
+                    "stop_process",
+                    "stop_layer",
+                    "process_id",
+                    "company_product"
+                ]
+            }
+        },
+        "Company J": {
+            "SHIPMENT_LIST": {
+                "COPY_FROM": "./redacted/internal_path/",
+                "COPY_TO": "./files/import/Company J/shipment_list/",
+                "customer_product": 0,
+                "fab_out_date": 24,
+                "sheet_name": "Shipment list",
+                "po": [
+                    {
+                        "po_no": 3,
+                        "shipping_wmai": 5
+                    },
+                    {
+                        "po_no": 6,
+                        "shipping_wmai": 8
+                    },
+                    {
+                        "po_no": 9,
+                        "shipping_wmai": 11
+                    },
+                    {
+                        "po_no": 12,
+                        "shipping_wmai": 14
+                    }
+                ]
+            },
+            "PO_MANAGEMENT_FILE": {
+                "COPY_FROM": "./redacted/internal_path/",
+                "COPY_TO": "./files/import/Company J/po_management_file/",
+                "SHEET_NAME": "Open_PO",
+                "COL_PONO": 5,
+                "COL_CUSTOMER_PRODUCT": 2,
+                "COL_QTY": 7,
+                "COL_OPEN_PO": 8
+            },
+            "COMMITED_DATE": {
+                "FOLDER": "./redacted/internal_path/",
+                "FILE": "commited_date_OSIC.txt"
+            },
+            "WIP": {
+                "DISP_NAME": "Company J",
+                "NAME_FORMAT": "WIP_OSIC{YYYYMMDD}{HH}00.csv",
+                "HOLD_DISP_ARRAY": [
+                    {
+                        "DISP_HOLD_NAME": "HOLD",
+                        "TARGET_HOLD_TYPE": [
+                            "USR",
+                            "TNA",
+                            "OPS"
+                        ]
+                    },
+                    {
+                        "DISP_HOLD_NAME": "",
+                        "TARGET_HOLD_TYPE": [
+                            ""
+                        ]
+                    }
+                ],
+                "EXPORT_ITEM": {
+                    "No#": {
+                        "item": ""
+                    },
+                    "Current Fab": {
+                        "item": "current_fab"
+                    },
+                    "Customer": {
+                        "item": "customer"
+                    },
+                    "Customer Product": {
+                        "item": "customer_product"
+                    },
+                    "ExampleFab Product": {
+                        "item": "company_product"
+                    },
+                    "Gross Die": {
+                        "item": "gross_die"
+                    },
+                    "Lot_ID": {
+                        "item": "lot_no"
+                    },
+                    "Wafer_Start_Qty": {
+                        "item": "start_qty"
+                    },
+                    "Wafer_Qty": {
+                        "item": "qty"
+                    },
+                    "Current_Stage": {
+                        "item": "current_stage"
+                    },
+                    "Stage_Sequence/Stage": {
+                        "item": "stage_sequence"
+                    },
+                    "Layer_Name": {
+                        "item": "layer_name"
+                    },
+                    "Layer_SEQ": {
+                        "item": "layer_seq"
+                    },
+                    "PO_No": {
+                        "item": "po_no"
+                    },
+                    "Priority": {
+                        "item": "priority"
+                    },
+                    "Start_Date": {
+                        "item": "start_date"
+                    },
+                    "Commit Out Date": {
+                        "item": "commit_out_date"
+                    },
+                    "Projected_Out_Date": {
+                        "item": "projected_out_date"
+                    },
+                    "Hold Flag": {
+                        "item": "hold_flag"
+                    },
+                    "Stay Day": {
+                        "item": "stay_day"
+                    },
+                    "Future Hold Flag": {
+                        "item": ""
+                    },
+                    "Mother Lot": {
+                        "item": "mother_lot"
+                    },
+                    "Wafer_ID": {
+                        "item": "wafer_id"
+                    },
+                    "[EOR]": {
+                        "item": ""
+                    }
+                }
+            },
+            "MANUAL_WIP": {
+                "FOLDER": "./files/import/Company J/",
+                "FILE": "manual.csv",
+                "HEADER": [
+                    "customer_product",
+                    "lot_no",
+                    "original_lot",
+                    "wmai",
+                    "po_no",
+                    "po_no2",
+                    "order_date",
+                    "commit_out_date",
+                    "shipment_date",
+                    "priority",
+                    "lot_type",
+                    "stop_process",
+                    "stop_layer",
+                    "process_id",
+                    "company_product"
+                ]
+            }
+        },
+        "CUST_F": {
+            "SHIPMENT_LIST": {
+                "COPY_FROM": "",
+                "COPY_TO": "",
+                "customer_product": 0,
+                "fab_out_date": 0,
+                "sheet_name": "Shipment list",
+                "po": [
+                    {
+                        "po_no": 0,
+                        "shipping_wmai": 0
+                    },
+                    {
+                        "po_no": 0,
+                        "shipping_wmai": 0
+                    },
+                    {
+                        "po_no": 0,
+                        "shipping_wmai": 0
+                    }
+                ]
+            },
+            "PO_MANAGEMENT_FILE": {
+                "COPY_FROM": "./redacted/internal_path/",
+                "COPY_TO": "./files/import/CUST_F/po_management_file/",
+                "SHEET_NAME": "Open_PO",
+                "COL_PONO": 3,
+                "COL_CUSTOMER_PRODUCT": 1,
+                "COL_QTY": 5,
+                "COL_OPEN_PO": 6
+            },
+            "COMMITED_DATE": {
+                "FOLDER": "",
+                "FILE": ""
+            },
+            "WIP": {
+                "DISP_NAME": "CUST_F",
+                "NAME_FORMAT": "WIP_HSBG{YYYYMMDD}{HH}00.csv",
+                "HOLD_DISP_ARRAY": [
+                    {
+                        "DISP_HOLD_NAME": "HOLD",
+                        "TARGET_HOLD_TYPE": [
+                            "USR",
+                            "TNA",
+                            "OPS"
+                        ]
+                    },
+                    {
+                        "DISP_HOLD_NAME": "",
+                        "TARGET_HOLD_TYPE": [
+                            ""
+                        ]
+                    }
+                ],
+                "EXPORT_ITEM": {
+                    "No#": {
+                        "item": ""
+                    },
+                    "Current Fab": {
+                        "item": "current_fab"
+                    },
+                    "Customer": {
+                        "item": "customer"
+                    },
+                    "Customer Product": {
+                        "item": "customer_product"
+                    },
+                    "ExampleFab Product": {
+                        "item": "company_product"
+                    },
+                    "Gross Die": {
+                        "item": "gross_die"
+                    },
+                    "Lot_ID": {
+                        "item": "lot_no"
+                    },
+                    "Wafer_Start_Qty": {
+                        "item": "start_qty"
+                    },
+                    "Wafer_Qty": {
+                        "item": "qty"
+                    },
+                    "Current_Stage": {
+                        "item": "current_stage"
+                    },
+                    "Stage_Sequence/Stage": {
+                        "item": "stage_sequence"
+                    },
+                    "Layer_Name": {
+                        "item": "layer_name"
+                    },
+                    "Layer_SEQ": {
+                        "item": "layer_seq"
+                    },
+                    "PO_No": {
+                        "item": "po_no"
+                    },
+                    "Priority": {
+                        "item": "priority"
+                    },
+                    "Start_Date": {
+                        "item": "start_date"
+                    },
+                    "Commit Out Date": {
+                        "item": "commit_out_date"
+                    },
+                    "Projected_Out_Date": {
+                        "item": "projected_out_date"
+                    },
+                    "Hold Flag": {
+                        "item": "hold_flag"
+                    },
+                    "Stay Day": {
+                        "item": "stay_day"
+                    },
+                    "Future Hold Flag": {
+                        "item": ""
+                    },
+                    "Mother Lot": {
+                        "item": "mother_lot"
+                    },
+                    "Wafer_ID": {
+                        "item": "wafer_id"
+                    },
+                    "[EOR]": {
+                        "item": ""
+                    }
+                }
+            },
+            "MANUAL_WIP": {
+                "FOLDER": "./files/import/CUST_F/",
+                "FILE": "manual.csv",
+                "HEADER": [
+                    "customer_product",
+                    "lot_no",
+                    "original_lot",
+                    "wmai",
+                    "po_no",
+                    "po_no2",
+                    "order_date",
+                    "commit_out_date",
+                    "shipment_date",
+                    "priority",
+                    "lot_type",
+                    "stop_process",
+                    "stop_layer",
+                    "process_id",
+                    "company_product"
+                ]
+            }
+        }
+    }
+}

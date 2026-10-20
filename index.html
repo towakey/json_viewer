@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JSONビューアー/エディター</title>
+<style>
+  :root {
+    --bg:         #f0f4f8;
+    --surface:    #ffffff;
+    --border:     #d0d7e2;
+    --primary:    #2563eb;
+    --primary-h:  #1d4ed8;
+    --danger:     #dc2626;
+    --success:    #16a34a;
+    --text:       #1e293b;
+    --text-muted: #64748b;
+    --radius:     8px;
+    --shadow:     0 1px 4px rgba(0,0,0,.10);
+    --mono:       "Consolas", "Menlo", "Courier New", monospace;
+    --hit:        #fef08a;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Meiryo", "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ===== ヘッダー ===== */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  header h1 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-right: 8px;
+    white-space: nowrap;
+  }
+  select, input[type="text"] {
+    padding: 6px 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--text);
+    background: var(--surface);
+    outline: none;
+  }
+  select:focus, input[type="text"]:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37,99,235,.15);
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 13px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    background: var(--surface);
+    color: var(--text);
+    transition: background .15s;
+    white-space: nowrap;
+  }
+  .btn:hover { background: var(--bg); }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+  .btn.primary { background: var(--primary); border-color: var(--primary); color: #fff; }
+  .btn.primary:hover { background: var(--primary-h); }
+  .btn.danger { color: var(--danger); border-color: #fecaca; }
+  .spacer { flex: 1; }
+
+  /* ===== モードタブ ===== */
+  .tabs { display: inline-flex; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .tabs button {
+    border: none;
+    background: var(--surface);
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    color: var(--text-muted);
+  }
+  .tabs button.active { background: var(--primary); color: #fff; }
+
+  /* ===== ステータスバー ===== */
+  #statusbar {
+    padding: 6px 16px;
+    font-size: 12px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    flex-wrap: wrap;
+    min-height: 32px;
+  }
+  #statusbar .ok { color: var(--success); font-weight: 600; }
+  #statusbar .err { color: var(--danger); font-weight: 600; cursor: pointer; }
+  #statusbar .dirty { color: #d97706; font-weight: 700; }
+  #statusbar .muted { color: var(--text-muted); }
+
+  /* ===== メイン ===== */
+  main { flex: 1; padding: 12px 16px 40px; }
+
+  /* ===== ツリー ===== */
+  #tree-view {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 10px 14px;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-x: auto;
+  }
+  .jnode { margin-left: 18px; }
+  .jnode.root { margin-left: 0; }
+  .jrow { display: flex; align-items: center; gap: 6px; padding: 1px 4px; border-radius: 4px; white-space: nowrap; }
+  .jrow:hover { background: #f1f5f9; }
+  .jrow.hit { background: var(--hit); }
+  .toggle {
+    width: 16px; cursor: pointer; color: var(--text-muted);
+    text-align: center; user-select: none; flex: none;
+  }
+  .toggle.empty { visibility: hidden; }
+  .jkey { color: #7c3aed; font-weight: 600; }
+  .jkey-idx { color: var(--text-muted); }
+  .jkey-edit {
+    font-family: var(--mono); font-size: 12px; padding: 1px 5px;
+    border: 1px solid var(--primary); border-radius: 4px; width: 14em;
+  }
+  .jval {
+    font-family: var(--mono); font-size: 12px; padding: 1px 6px;
+    border: 1px solid transparent; border-radius: 4px; background: transparent;
+    min-width: 4em; max-width: 32em; width: auto;
+  }
+  .jval:hover { border-color: var(--border); background: #fff; }
+  .jval:focus { border-color: var(--primary); background: #fff; outline: none; }
+  .jval.err { border-color: var(--danger); background: #fef2f2; }
+  .jval.t-string { color: #15803d; }
+  .jval.t-number { color: #1d4ed8; }
+  .jval.t-null { color: var(--text-muted); font-style: italic; border: none; }
+  .jbool { font-family: var(--mono); font-size: 12px; padding: 1px 4px; }
+  .jcount { color: var(--text-muted); font-size: 11px; }
+  .jtype { font-family: var(--mono); font-size: 11px; color: #9333ea; padding: 0 4px; }
+  .jactions { display: none; gap: 2px; }
+  .jrow:hover .jactions { display: inline-flex; }
+  .jactions button {
+    border: 1px solid var(--border); background: var(--surface); border-radius: 4px;
+    font-size: 10px; padding: 0 5px; cursor: pointer; font-family: inherit; line-height: 1.6;
+  }
+  .jactions button:hover { background: var(--bg); }
+  .jactions .del { color: var(--danger); }
+  .jcollapsed { display: none; }
+
+  /* ===== テキストモード ===== */
+  #text-view { display: none; }
+  #json-text {
+    width: 100%;
+    min-height: calc(100vh - 210px);
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.55;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    resize: vertical;
+    white-space: pre;
+    overflow: auto;
+    tab-size: 4;
+  }
+  #json-text.err { border-color: var(--danger); }
+  #text-error {
+    display: none;
+    margin-top: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    font-family: var(--mono);
+    color: var(--danger);
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: var(--radius);
+    cursor: pointer;
+  }
+  #text-error.show { display: block; }
+
+  #empty-msg {
+    text-align: center; color: var(--text-muted); padding: 60px 0; font-size: 14px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>JSONビューアー</h1>
+  <select id="file-select"><option value="">-- ファイルを選択 --</option></select>
+  <button class="btn" id="btn-reload" disabled>再読み込み</button>
+  <button class="btn" id="btn-open-local">ファイルを開く</button>
+  <input type="file" id="local-file" accept=".json,application/json" style="display:none">
+
+  <span class="spacer"></span>
+
+  <input type="text" id="search" placeholder="キー/値を検索" style="width:180px" disabled>
+  <button class="btn" id="btn-expand" disabled>全展開</button>
+  <button class="btn" id="btn-collapse" disabled>全折りたたみ</button>
+
+  <div class="tabs">
+    <button id="tab-tree" class="active">ツリー</button>
+    <button id="tab-text">テキスト</button>
+  </div>
+
+  <button class="btn" id="btn-format">整形</button>
+  <button class="btn" id="btn-check">チェック</button>
+  <button class="btn" id="btn-download" disabled>ダウンロード</button>
+  <button class="btn primary" id="btn-save" disabled>保存</button>
+</header>
+
+<div id="statusbar"><span class="muted">ファイルを選択してください</span></div>
+
+<main>
+  <div id="tree-view"><div id="empty-msg">左の一覧からJSONファイルを選択するか、「ファイルを開く」でローカルファイルを開いてください。</div></div>
+  <div id="text-view">
+    <textarea id="json-text" spellcheck="false"></textarea>
+    <div id="text-error"></div>
+  </div>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  var state = {
+    file: null,          // サーバー上のファイル名（ローカルの場合はローカル名）
+    source: "server",    // "server" | "local"
+    model: null,         // パース済みJSON
+    dirty: false,
+    mode: "tree",        // "tree" | "text"
+    expanded: {},        // pathKey -> true
+    forceExpand: {},     // 検索ヒットの祖先 pathKey -> true
+    loadedValid: true    // 読み込み時点でJSONが正常か
+  };
+
+  var $ = function (id) { return document.getElementById(id); };
+  var treeView = $("tree-view"), textView = $("text-view"), jsonText = $("json-text");
+
+  /* ---------- ユーティリティ ---------- */
+  function typeOf(v) {
+    if (v === null) return "null";
+    if (Array.isArray(v)) return "array";
+    return typeof v;
+  }
+  function pathKey(path) { return JSON.stringify(path); }
+  function setDirty(d) {
+    state.dirty = d;
+    renderStatus();
+  }
+  function defaultExpand(path) {
+    state.expanded[pathKey(path)] = true;
+  }
+
+  /* ---------- ステータス表示 ---------- */
+  function renderStatus(extra) {
+    var sb = $("statusbar");
+    sb.innerHTML = "";
+    function span(cls, text) {
+      var s = document.createElement("span");
+      if (cls) s.className = cls;
+      s.textContent = text;
+      sb.appendChild(s);
+    }
+    if (!state.file) {
+      span("muted", "ファイルを選択してください");
+      return;
+    }
+    span("", state.file + (state.source === "local" ? "（ローカル）" : ""));
+    if (state.dirty) span("dirty", "未保存の変更あり");
+    if (extra && extra.error) {
+      var e = span("err", extra.error);
+      if (extra.line) {
+        e.title = "クリックでエラー行へ移動";
+        e.onclick = function () { jumpToLine(extra.line, extra.column); };
+      }
+    } else if (extra && extra.message) {
+      span("ok", extra.message);
+    } else {
+      if (state.mode === "tree") span("ok", "JSON正常");
+      else if (state.textValid !== false) span("ok", "JSON正常");
+    }
+  }
+
+  /* ---------- API ---------- */
+  function api(url, opts) {
+    return fetch(url, opts).then(function (r) { return r.json(); });
+  }
+  function loadFileList() {
+    api("list_json.py").then(function (res) {
+      var sel = $("file-select");
+      sel.innerHTML = '<option value="">-- ファイルを選択 --</option>';
+      if (!res.success) { showStatusError(res.error); return; }
+      res.files.forEach(function (f) {
+        var o = document.createElement("option");
+        o.value = f.name;
+        o.textContent = f.name + " (" + Math.ceil(f.size / 1024) + " KB)";
+        sel.appendChild(o);
+      });
+      if (res.files.length === 1) {
+        sel.value = res.files[0].name;
+        loadFile(res.files[0].name);
+      }
+    }).catch(function (e) { showStatusError("一覧取得失敗: " + e); });
+  }
+  function showStatusError(msg) {
+    var sb = $("statusbar");
+    sb.innerHTML = "";
+    var s = document.createElement("span");
+    s.className = "err";
+    s.textContent = msg;
+    sb.appendChild(s);
+  }
+
+  function loadFile(name) {
+    api("load_json.py?file=" + encodeURIComponent(name)).then(function (res) {
+      if (!res.success) { showStatusError(res.error); return; }
+      state.file = name;
+      state.source = "server";
+      state.dirty = false;
+      state.expanded = {};
+      state.forceExpand = {};
+      state.loadedValid = res.valid;
+      jsonText.value = res.content;
+      try {
+        state.model = JSON.parse(res.content);
+        seedExpansion(state.model);
+        switchMode("tree");
+        if (!res.valid) {
+          // ありえないはずだが念のため
+          renderStatus({ error: "JSONエラーあり" });
+        } else {
+          renderStatus({ message: "読み込みました" });
+        }
+      } catch (e) {
+        // サーバー側エラー詳細（行/桁）があれば使う
+        state.model = null;
+        switchMode("text");
+        var d = res.error_detail;
+        if (d) renderStatus({ error: "JSONエラー: " + d.message + " (" + d.line + "行目 " + d.column + "桁目)", line: d.line, column: d.column });
+        else showTextError(e);
+      }
+      updateButtons();
+    }).catch(function (e) { showStatusError("読み込み失敗: " + e); });
+  }
+
+  function seedExpansion(model) {
+    // 既定で2階層まで展開
+    (function walk(v, path, depth) {
+      var t = typeOf(v);
+      if (t === "object" || t === "array") {
+        if (depth < 2) defaultExpand(path);
+        var keys = t === "object" ? Object.keys(v) : v.map(function (_, i) { return i; });
+        keys.forEach(function (k) { walk(v[k], path.concat(k), depth + 1); });
+      }
+    })(model, [], 0);
+  }
+
+  /* ---------- ツリー描画 ---------- */
+  function isExpanded(path) {
+    var k = pathKey(path);
+    return !!state.expanded[k] || !!state.forceExpand[k];
+  }
+
+  function renderTree() {
+    treeView.innerHTML = "";
+    if (state.model === null) {
+      treeView.innerHTML = '<div id="empty-msg">表示するJSONがありません</div>';
+      return;
+    }
+    computeForceExpand();
+    var root = document.createElement("div");
+    root.className = "jnode root";
+    renderNode(state.model, null, [], root, true);
+    treeView.appendChild(root);
+  }
+
+  function computeForceExpand() {
+    state.forceExpand = {};
+    var q = $("search").value.trim().toLowerCase();
+    if (!q) return;
+    (function walk(v, path) {
+      var t = typeOf(v);
+      if (t === "object") {
+        Object.keys(v).forEach(function (k) {
+          var cp = path.concat(k);
+          var hit = k.toLowerCase().indexOf(q) >= 0;
+          var cv = v[k];
+          var ct = typeOf(cv);
+          if (!hit && (ct === "string" || ct === "number" || ct === "boolean" || ct === "null")) {
+            hit = String(cv).toLowerCase().indexOf(q) >= 0;
+          }
+          if (hit) {
+            for (var i = 0; i <= cp.length; i++) {
+              state.forceExpand[pathKey(cp.slice(0, i))] = true;
+            }
+          }
+          walk(cv, cp);
+        });
+      } else if (t === "array") {
+        v.forEach(function (item, i) { walk(item, path.concat(i)); });
+      }
+    })(state.model, []);
+  }
+
+  function isHit(key, value) {
+    var q = $("search").value.trim().toLowerCase();
+    if (!q) return false;
+    if (key !== null && String(key).toLowerCase().indexOf(q) >= 0) return true;
+    var t = typeOf(value);
+    if (t === "string" || t === "number" || t === "boolean" || t === "null") {
+      return String(value).toLowerCase().indexOf(q) >= 0;
+    }
+    return false;
+  }
+
+  function renderNode(value, key, path, parentEl, isRoot) {
+    var t = typeOf(value);
+    var node = document.createElement("div");
+    node.className = "jnode";
+    var row = document.createElement("div");
+    row.className = "jrow" + (isHit(key, value) ? " hit" : "");
+    node.appendChild(row);
+
+    var isContainer = (t === "object" || t === "array");
+
+    // 展開トグル
+    var tg = document.createElement("span");
+    tg.className = "toggle" + (isContainer ? "" : " empty");
+    if (isContainer) {
+      tg.textContent = isExpanded(path) ? "▾" : "▸";
+      tg.onclick = function () {
+        var k = pathKey(path);
+        if (state.expanded[k]) delete state.expanded[k];
+        else state.expanded[k] = true;
+        renderTree();
+      };
+    }
+    row.appendChild(tg);
+
+    // キー
+    if (key !== null && !isRoot) {
+      if (typeof key === "number") {
+        var ks = document.createElement("span");
+        ks.className = "jkey-idx";
+        ks.textContent = "[" + key + "]";
+        row.appendChild(ks);
+      } else {
+        var ki = document.createElement("input");
+        ki.className = "jval jkey-edit";
+        ki.value = key;
+        ki.title = "キー名（変更可）";
+        ki.onchange = function () {
+          renameKey(path, ki.value);
+        };
+        row.appendChild(ki);
+        var colon = document.createElement("span");
+        colon.textContent = ":";
+        colon.style.color = "#94a3b8";
+        row.appendChild(colon);
+      }
+    } else if (isRoot) {
+      var rs = document.createElement("span");
+      rs.className = "jkey-idx";
+      rs.textContent = "(root)";
+      row.appendChild(rs);
+    }
+
+    if (isContainer) {
+      var badge = document.createElement("span");
+      badge.className = "jtype";
+      var n = t === "object" ? Object.keys(value).length : value.length;
+      badge.textContent = (t === "object" ? "{" : "[") + n + (t === "object" ? "}" : "]");
+      row.appendChild(badge);
+    } else {
+      row.appendChild(makeValueControl(value, path, t));
+    }
+
+    // 型変換
+    row.appendChild(makeTypeSelect(path, t));
+
+    // アクション
+    var acts = document.createElement("span");
+    acts.className = "jactions";
+    if (isContainer) {
+      var addBtn = document.createElement("button");
+      addBtn.textContent = "+追加";
+      addBtn.title = "子要素を追加";
+      addBtn.onclick = function () { addChild(path, t); };
+      acts.appendChild(addBtn);
+    }
+    if (!isRoot) {
+      var delBtn = document.createElement("button");
+      delBtn.className = "del";
+      delBtn.textContent = "削除";
+      delBtn.onclick = function () { deleteNode(path); };
+      acts.appendChild(delBtn);
+    }
+    row.appendChild(acts);
+
+    // 子要素
+    if (isContainer && isExpanded(path)) {
+      var children = document.createElement("div");
+      children.className = "jchildren";
+      if (t === "object") {
+        Object.keys(value).forEach(function (k) {
+          renderNode(value[k], k, path.concat(k), children, false);
+        });
+      } else {
+        value.forEach(function (item, i) {
+          renderNode(item, i, path.concat(i), children, false);
+        });
+      }
+      node.appendChild(children);
+    }
+    parentEl.appendChild(node);
+  }
+
+  /* ---------- 値コントロール ---------- */
+  function makeValueControl(value, path, t) {
+    if (t === "boolean") {
+      var sel = document.createElement("select");
+      sel.className = "jbool";
+      ["true", "false"].forEach(function (o) {
+        var op = document.createElement("option");
+        op.value = o; op.textContent = o;
+        if (String(value) === o) op.selected = true;
+        sel.appendChild(op);
+      });
+      sel.onchange = function () { setValue(path, sel.value === "true"); };
+      return sel;
+    }
+    if (t === "null") {
+      var s = document.createElement("span");
+      s.className = "jval t-null";
+      s.textContent = "null";
+      return s;
+    }
+    var inp = document.createElement("input");
+    inp.className = "jval t-" + t;
+    inp.value = t === "string" ? value : String(value);
+    inp.size = Math.min(Math.max(String(inp.value).length + 2, 6), 60);
+    inp.onchange = function () {
+      if (t === "number") {
+        var num = parseNumberLiteral(inp.value);
+        if (num === undefined) {
+          inp.classList.add("err");
+          renderStatus({ error: "数値として不正です: " + inp.value });
+          inp.value = String(getAt(path));
+          return;
+        }
+        setValue(path, num);
+      } else {
+        setValue(path, inp.value);
+      }
+    };
+    inp.oninput = function () { inp.classList.remove("err"); };
+    return inp;
+  }
+
+  function parseNumberLiteral(s) {
+    s = s.trim();
+    if (!/^-?\d+(\.\d+)?([eE][+-]?\d+)?$/.test(s)) return undefined;
+    var n = Number(s);
+    return isNaN(n) ? undefined : n;
+  }
+
+  function makeTypeSelect(path, t) {
+    var sel = document.createElement("select");
+    sel.className = "jbool";
+    sel.title = "型を変換";
+    ["string", "number", "boolean", "null", "object", "array"].forEach(function (o) {
+      var op = document.createElement("option");
+      op.value = o; op.textContent = o;
+      if (o === t) op.selected = true;
+      sel.appendChild(op);
+    });
+    sel.onchange = function () { convertType(path, sel.value); };
+    return sel;
+  }
+
+  /* ---------- ツリー操作 ---------- */
+  function getParent(path) {
+    var v = state.model;
+    for (var i = 0; i < path.length - 1; i++) v = v[path[i]];
+    return v;
+  }
+  function getAt(path) {
+    var v = state.model;
+    for (var i = 0; i < path.length; i++) v = v[path[i]];
+    return v;
+  }
+  function setValue(path, v) {
+    var p = getParent(path);
+    p[path[path.length - 1]] = v;
+    setDirty(true);
+  }
+  function renameKey(path, newKey) {
+    newKey = newKey;
+    var parent = getParent(path);
+    var oldKey = path[path.length - 1];
+    if (newKey === oldKey) { renderTree(); return; }
+    if (Object.prototype.hasOwnProperty.call(parent, newKey)) {
+      alert("キー '" + newKey + "' は既に存在します");
+      renderTree();
+      return;
+    }
+    // 順序を保って置き換え
+    var rebuilt = {};
+    Object.keys(parent).forEach(function (k) {
+      if (k === oldKey) rebuilt[newKey] = parent[k];
+      else rebuilt[k] = parent[k];
+    });
+    Object.keys(parent).forEach(function (k) { delete parent[k]; });
+    Object.keys(rebuilt).forEach(function (k) { parent[k] = rebuilt[k]; });
+    setDirty(true);
+    renderTree();
+  }
+  function convertType(path, newType) {
+    var cur = getAt(path);
+    var curT = typeOf(cur);
+    if (newType === curT) return;
+    var losesData =
+      (curT === "object" && Object.keys(cur).length > 0) ||
+      (curT === "array" && cur.length > 0);
+    if (losesData && !confirm("中のデータが失われます。型を変換しますか？")) {
+      renderTree();
+      return;
+    }
+    var nv;
+    if (newType === "string") nv = curT === "string" ? cur : "";
+    else if (newType === "number") nv = 0;
+    else if (newType === "boolean") nv = false;
+    else if (newType === "null") nv = null;
+    else if (newType === "object") nv = {};
+    else nv = [];
+    if (path.length === 0) {
+      state.model = nv;
+    } else {
+      var p = getParent(path);
+      p[path[path.length - 1]] = nv;
+    }
+    if (newType === "object" || newType === "array") defaultExpand(path);
+    setDirty(true);
+    renderTree();
+  }
+  function addChild(path, t) {
+    var v = getAt(path);
+    if (t === "object") {
+      var key = prompt("追加するキー名:");
+      if (key === null) return;
+      if (key === "") { alert("キー名を入力してください"); return; }
+      if (Object.prototype.hasOwnProperty.call(v, key)) {
+        alert("キー '" + key + "' は既に存在します");
+        return;
+      }
+      v[key] = "";
+    } else {
+      v.push(null);
+    }
+    defaultExpand(path);
+    setDirty(true);
+    renderTree();
+  }
+  function deleteNode(path) {
+    var p = getParent(path);
+    var k = path[path.length - 1];
+    if (Array.isArray(p)) p.splice(k, 1);
+    else delete p[k];
+    setDirty(true);
+    renderTree();
+  }
+
+  /* ---------- モード切替 ---------- */
+  function switchMode(mode) {
+    if (mode === state.mode) {
+      if (mode === "tree") renderTree();
+      return;
+    }
+    if (mode === "text") {
+      // ツリー → テキスト
+      if (state.model !== null) {
+        jsonText.value = JSON.stringify(state.model, null, 4) + "\n";
+        state.textValid = true;
+      }
+      state.mode = "text";
+      treeView.style.display = "none";
+      textView.style.display = "block";
+      $("tab-text").classList.add("active");
+      $("tab-tree").classList.remove("active");
+      validateText();
+    } else {
+      // テキスト → ツリー
+      try {
+        state.model = JSON.parse(jsonText.value);
+        state.textValid = true;
+      } catch (e) {
+        showTextError(e);
+        return; // エラー時はテキストモードのまま
+      }
+      state.mode = "tree";
+      textView.style.display = "none";
+      treeView.style.display = "block";
+      $("tab-tree").classList.add("active");
+      $("tab-text").classList.remove("active");
+      renderTree();
+    }
+    renderStatus();
+  }
+
+  /* ---------- テキスト検証 ---------- */
+  function posToLineCol(text, pos) {
+    var line = 1, col = 1;
+    for (var i = 0; i < pos && i < text.length; i++) {
+      if (text.charCodeAt(i) === 10) { line++; col = 1; }
+      else col++;
+    }
+    return { line: line, column: col };
+  }
+
+  function showTextError(e) {
+    state.textValid = false;
+    var msg = e.message || String(e);
+    var m = /position (\d+)/.exec(msg);
+    var info = null;
+    if (m) info = posToLineCol(jsonText.value, parseInt(m[1], 10));
+    else if (/end of JSON/i.test(msg)) info = posToLineCol(jsonText.value, jsonText.value.length);
+    var te = $("text-error");
+    if (info) {
+      te.textContent = "JSONエラー: " + msg + " → " + info.line + "行目 " + info.column + "桁目（クリックで移動）";
+      te.onclick = function () { jumpToLine(info.line, info.column); };
+      renderStatus({ error: "JSONエラー: " + info.line + "行目", line: info.line, column: info.column });
+    } else {
+      te.textContent = "JSONエラー: " + msg;
+      te.onclick = null;
+      renderStatus({ error: "JSONエラー: " + msg });
+    }
+    te.classList.add("show");
+    jsonText.classList.add("err");
+  }
+
+  function clearTextError() {
+    $("text-error").classList.remove("show");
+    jsonText.classList.remove("err");
+  }
+
+  function validateText() {
+    try {
+      JSON.parse(jsonText.value);
+      state.textValid = true;
+      clearTextError();
+      renderStatus({ message: "JSONは正常です" });
+      return true;
+    } catch (e) {
+      showTextError(e);
+      return false;
+    }
+  }
+
+  function jumpToLine(line, column) {
+    if (state.mode !== "text") switchMode("text");
+    var lines = jsonText.value.split("\n");
+    var offset = 0;
+    for (var i = 0; i < line - 1 && i < lines.length; i++) {
+      offset += lines[i].length + 1;
+    }
+    var start = offset;
+    var end = offset + (lines[line - 1] || "").length;
+    jsonText.focus();
+    jsonText.setSelectionRange(start, end);
+    // スクロール位置調整
+    var lineHeight = 20; // 概算
+    jsonText.scrollTop = Math.max(0, (line - 5) * lineHeight);
+  }
+
+  /* ---------- 保存 / ダウンロード ---------- */
+  function currentText() {
+    if (state.mode === "text") return jsonText.value;
+    return JSON.stringify(state.model, null, 4) + "\n";
+  }
+
+  function save() {
+    if (!state.file || state.source !== "server") return;
+    var content = currentText();
+    // まずクライアント側で検証
+    try {
+      JSON.parse(content);
+    } catch (e) {
+      if (state.mode === "text") showTextError(e);
+      renderStatus({ error: "保存前チェック失敗: " + (e.message || e) });
+      return;
+    }
+    api("save_json.py", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ file: state.file, content: content })
+    }).then(function (res) {
+      if (!res.success) {
+        var d = res.error_detail;
+        if (d) renderStatus({ error: res.error, line: d.line, column: d.column });
+        else renderStatus({ error: res.error });
+        return;
+      }
+      state.model = JSON.parse(content);
+      setDirty(false);
+      renderStatus({ message: res.message + (res.backup ? "（バックアップ: " + res.backup + "）" : "") });
+      if (state.mode === "tree") renderTree();
+    }).catch(function (e) {
+      renderStatus({ error: "保存失敗: " + e });
+    });
+  }
+
+  function download() {
+    var content = currentText();
+    try { JSON.parse(content); } catch (e) {
+      if (!confirm("JSONにエラーがあります。それでもダウンロードしますか？")) return;
+    }
+    var blob = new Blob([content], { type: "application/json" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = state.file || "edited.json";
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+  }
+
+  /* ---------- ローカルファイル ---------- */
+  function openLocal(file) {
+    var reader = new FileReader();
+    reader.onload = function () {
+      var text = String(reader.result);
+      state.file = file.name;
+      state.source = "local";
+      state.dirty = false;
+      state.expanded = {};
+      state.forceExpand = {};
+      jsonText.value = text;
+      try {
+        state.model = JSON.parse(text);
+        seedExpansion(state.model);
+        switchMode("tree");
+        renderStatus({ message: "読み込みました（ローカル）" });
+      } catch (e) {
+        state.model = null;
+        if (state.mode !== "text") {
+          state.mode = "text";
+          treeView.style.display = "none";
+          textView.style.display = "block";
+          $("tab-text").classList.add("active");
+          $("tab-tree").classList.remove("active");
+        }
+        showTextError(e);
+      }
+      updateButtons();
+    };
+    reader.readAsText(file, "utf-8");
+  }
+
+  /* ---------- ボタン状態 ---------- */
+  function updateButtons() {
+    var hasFile = !!state.file;
+    $("btn-reload").disabled = !(hasFile && state.source === "server");
+    $("btn-save").disabled = !(hasFile && state.source === "server");
+    $("btn-download").disabled = !hasFile;
+    $("search").disabled = !hasFile;
+    $("btn-expand").disabled = !hasFile;
+    $("btn-collapse").disabled = !hasFile;
+  }
+
+  /* ---------- イベント ---------- */
+  $("file-select").onchange = function () {
+    var f = this.value;
+    if (f) {
+      if (state.dirty && !confirm("未保存の変更があります。破棄して読み込みますか？")) {
+        this.value = state.file || "";
+        return;
+      }
+      loadFile(f);
+    }
+  };
+  $("btn-reload").onclick = function () {
+    if (state.dirty && !confirm("未保存の変更があります。破棄して再読み込みしますか？")) return;
+    loadFile(state.file);
+  };
+  $("btn-open-local").onclick = function () { $("local-file").click(); };
+  $("local-file").onchange = function () {
+    if (this.files[0]) {
+      if (state.dirty && !confirm("未保存の変更があります。破棄して開きますか？")) {
+        this.value = "";
+        return;
+      }
+      openLocal(this.files[0]);
+      this.value = "";
+    }
+  };
+  $("tab-tree").onclick = function () { switchMode("tree"); };
+  $("tab-text").onclick = function () { switchMode("text"); };
+  $("btn-format").onclick = function () {
+    if (state.mode === "text") {
+      try {
+        jsonText.value = JSON.stringify(JSON.parse(jsonText.value), null, 4) + "\n";
+        clearTextError();
+        state.textValid = true;
+        setDirty(true);
+        renderStatus({ message: "整形しました" });
+      } catch (e) { showTextError(e); }
+    } else {
+      renderStatus({ message: "ツリー編集内容は常に整形済みです" });
+    }
+  };
+  $("btn-check").onclick = function () {
+    if (state.mode === "text") {
+      validateText();
+    } else {
+      renderStatus({ message: "JSONは正常です（ツリー編集は常に正しいJSONを生成します）" });
+    }
+  };
+  $("btn-save").onclick = save;
+  $("btn-download").onclick = download;
+  $("btn-expand").onclick = function () {
+    (function walk(v, path) {
+      var t = typeOf(v);
+      if (t === "object" || t === "array") {
+        defaultExpand(path);
+        var keys = t === "object" ? Object.keys(v) : v.map(function (_, i) { return i; });
+        keys.forEach(function (k) { walk(v[k], path.concat(k)); });
+      }
+    })(state.model, []);
+    renderTree();
+  };
+  $("btn-collapse").onclick = function () {
+    state.expanded = {};
+    renderTree();
+  };
+  var searchTimer = null;
+  $("search").oninput = function () {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(function () {
+      if (state.mode === "tree") renderTree();
+    }, 300);
+  };
+  var textTimer = null;
+  jsonText.addEventListener("input", function () {
+    setDirty(true);
+    clearTimeout(textTimer);
+    textTimer = setTimeout(validateText, 500);
+  });
+  window.addEventListener("beforeunload", function (e) {
+    if (state.dirty) {
+      e.preventDefault();
+      e.returnValue = "";
+    }
+  });
+
+  /* ---------- 初期化 ---------- */
+  loadFileList();
+  updateButtons();
+})();
+</script>
+</body>
+</html>

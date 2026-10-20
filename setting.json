@@ -1,0 +1,8 @@
+{
+  "json_directory": "json_files",
+  "read_encoding": "utf-8",
+  "write_encoding": "utf-8",
+  "create_backup": true,
+  "backup_directory": "json_files/backup",
+  "allowed_extensions": [".json"]
+}
